@@ -5,7 +5,6 @@ import {
   RiCloseLine,
   RiHomeLine,
   RiMenu4Fill,
-  RiUser2Fill,
   RiUser2Line,
 } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
@@ -35,13 +34,13 @@ export default function Header() {
 
       <div className="flex items-center space-x-4 relative">
         <button className="md:hidden inline-flex items-center bg-white p-2 text-black1 relative">
-            <NavLink to='/cart'>
-          <RiShoppingCartLine size={24} />
-          {cartQuantity > 0 && (
-            <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-600 text-white text-xs rounded-full px-2 py-1">
-              {cartQuantity}
-            </span>
-          )}
+          <NavLink to="/cart">
+            <RiShoppingCartLine size={24} />
+            {cartQuantity > 0 && (
+              <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-600 text-white text-xs rounded-full px-2 py-1">
+                {cartQuantity}
+              </span>
+            )}
           </NavLink>
         </button>
         <button
