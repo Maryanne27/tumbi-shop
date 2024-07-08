@@ -1,15 +1,11 @@
-import React, { useState } from "react";
-import {
-  RiSearchLine,
-  RiShoppingCartLine,
-  RiCloseLine,
-  RiHomeLine,
-  RiMenu4Fill,
-} from "react-icons/ri";
-import { NavLink } from "react-router-dom";
+import React, { useContext, useState } from 'react';
+import { RiSearchLine, RiShoppingCartLine, RiCloseLine, RiHomeLine, RiMenu4Fill } from 'react-icons/ri';
+import { NavLink } from 'react-router-dom';
+import { context } from '../context/context';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { cartQuantity } = useContext(context);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -25,7 +21,6 @@ export default function Header() {
         <div className="hidden md:flex space-x-6 text-sm">
           <ul className="flex space-x-6">
             <NavLink to="/">Store Front</NavLink>
-            {/* <NavLink to="/about">About Us</NavLink> */}
           </ul>
         </div>
       </div>
@@ -49,11 +44,13 @@ export default function Header() {
               className="bg-transparent border-none outline-none px-2 text-black"
             />
           </div>
-          {/* <NavLink to="/user" className="bg-white text-black p-2 ">
-            <RiUserLine />
-          </NavLink> */}
-          <NavLink to="/cart" className="bg-white text-black p-2 ">
+          <NavLink to="/cart" className="bg-white text-black p-2 relative">
             <RiShoppingCartLine />
+            {cartQuantity > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2 py-1">
+                {cartQuantity}
+              </span>
+            )}
           </NavLink>
         </div>
       </div>
@@ -61,7 +58,6 @@ export default function Header() {
       {menuOpen && (
         <div className="absolute top-16 left-0 w-full h-40 bg-white text-black flex flex-col items-start p-4 md:hidden">
           <ul className="flex flex-col space-y-4 text-sm w-full">
-            
             <li className="flex items-center space-x-2">
               <RiShoppingCartLine />
               <NavLink to="/cart">Cart</NavLink>

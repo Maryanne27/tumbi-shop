@@ -1,15 +1,12 @@
-import React, { useState } from "react";
-import {
-  RiArrowDownSLine,
-  RiArrowLeftSLine,
-  RiArrowRightSLine,
-  RiHomeLine,
-} from "react-icons/ri";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import products from "./products";
-import Promo from "./promo";
-import { fadeIn } from "../variants";
+import React, { useState, useContext } from 'react';
+import { RiArrowDownSLine, RiArrowLeftSLine, RiArrowRightSLine, RiHomeLine } from 'react-icons/ri';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import products from './products';
+import Promo from './promo';
+import { fadeIn } from '../variants';
+import { context } from '../context/context';
+
 
 const flipVariants = {
   hidden: { opacity: 0, rotateX: -90 },
@@ -23,6 +20,7 @@ const flipVariants = {
 export default function FeaturedProducts() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [sortOption, setSortOption] = useState("popularity");
+  const { addToCart } = useContext(context);
 
   const handleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
@@ -111,7 +109,10 @@ export default function FeaturedProducts() {
                 <p className="text-gray-600 text-xs">{product.description}</p>
                 <div className="flex items-center justify-between mt-2">
                   <p className="text-sm font-bold">{product.price}</p>
-                  <div className="relative bg-black text-white p-2 text-xs lg:text-sm cursor-pointer">
+                  <div
+                    onClick={() => addToCart(product)}
+                    className="relative bg-black text-white p-2 text-xs lg:text-sm cursor-pointer"
+                  >
                     Add to cart
                   </div>
                 </div>
@@ -120,7 +121,7 @@ export default function FeaturedProducts() {
           ))}
         </motion.div>
         {/* Pagination */}
-        <div className="flex justify-center items-center mt-8">
+        <div className="flex justify-center items-center mt-28">
           <RiArrowLeftSLine className="cursor-pointer mx-2" />
           <div className="flex space-x-2">
             <span className="cursor-pointer px-2 py-1 bg-white hover:bg-gray-100">
@@ -147,6 +148,7 @@ export default function FeaturedProducts() {
           </div>
           <RiArrowRightSLine className="cursor-pointer mx-2" />
         </div>
+
         <Promo />
       </div>
     </div>
