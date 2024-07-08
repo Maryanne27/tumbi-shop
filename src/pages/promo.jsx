@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { RiArrowRightSLine } from "react-icons/ri";
 import bg1 from "../assets/bg.JPG";
 import bg2 from "../assets/bg2.svg";
@@ -9,14 +10,42 @@ import brand4 from "../assets/brand4.svg";
 import brand5 from "../assets/brand5.svg";
 import brand6 from "../assets/brand6.svg";
 
+const textVariants = {
+  hidden: { opacity: 0, x: -50 },
+  visible: { opacity: 1, x: 0, transition: { duration: 1 } }
+};
+
+const imageVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 1 } }
+};
+
+const buttonVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 1 } }
+};
+
+const brandVariants = {
+  hover: { scale: 1.1, transition: { duration: 0.3 } }
+};
+
 export default function Promo() {
   return (
     <div>
       <div className="flex justify-center items-center my-16">
         <div className="flex flex-col md:flex-row overflow-hidden max-w-3xl w-full">
-          <div className="flex-1">
-            <img src={bg2} alt="promo" className="object-cover w-full h-full md:h-auto" />
-          </div>
+          <motion.div
+            className="flex-1"
+            initial="hidden"
+            animate="visible"
+            variants={imageVariants}
+          >
+            <img
+              src={bg2}
+              alt="promo"
+              className="object-cover w-full h-full md:h-auto"
+            />
+          </motion.div>
           <div
             className="flex-1 flex flex-col justify-center items-start p-6 h-full md:h-auto pt-16 pb-16 md:pt-0 md:pb-0"
             style={{
@@ -26,13 +55,30 @@ export default function Promo() {
             }}
           >
             <div className="w-full max-w-sm ml-auto text-left">
-              <p className="text-gray1 text-base mb-2">Limited offer</p>
-              <h3 className="text-white text-2xl font-bold mb-4">
+              <motion.p
+                className="text-gray1 text-base mb-2"
+                initial="hidden"
+                animate="visible"
+                variants={textVariants}
+              >
+                Limited offer
+              </motion.p>
+              <motion.h3
+                className="text-white text-2xl font-bold mb-4"
+                initial="hidden"
+                animate="visible"
+                variants={textVariants}
+              >
                 30% Off this weekend and get free gift
-              </h3>
-              <button className="bg-white text-black px-4 py-2 flex items-center">
+              </motion.h3>
+              <motion.button
+                className="bg-white text-black px-4 py-2 flex items-center"
+                initial="hidden"
+                animate="visible"
+                variants={buttonVariants}
+              >
                 Shop Now <RiArrowRightSLine className="ml-2" />
-              </button>
+              </motion.button>
             </div>
           </div>
         </div>
@@ -45,12 +91,16 @@ export default function Promo() {
         </h3>
         <div className="bg-black p-4">
           <div className="bg-white grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 p-4 justify-center items-center">
-            <img src={brand1} alt="Givenchy" className="w-24 md:w-32 mx-auto" />
-            <img src={brand2} alt="Prada" className="w-24 md:w-32 mx-auto" />
-            <img src={brand3} alt="Zara" className="w-24 md:w-32 mx-auto" />
-            <img src={brand4} alt="Dior" className="w-24 md:w-32 mx-auto" />
-            <img src={brand5} alt="Armani" className="w-24 md:w-32 mx-auto" />
-            <img src={brand6} alt="Fendi" className="w-24 md:w-32 mx-auto" />
+            {[brand1, brand2, brand3, brand4, brand5, brand6].map((brand, index) => (
+              <motion.img
+                key={index}
+                src={brand}
+                alt={`brand ${index + 1}`}
+                className="w-24 md:w-32 mx-auto"
+                variants={brandVariants}
+                whileHover="hover"
+              />
+            ))}
           </div>
         </div>
       </div>

@@ -1,13 +1,32 @@
-import React from "react";
-import { RiShoppingCartLine, RiArrowDownSLine, RiArrowLeftSLine, RiArrowRightSLine, RiHomeLine } from "react-icons/ri";
+import React, { useState } from "react";
+import {
+  RiShoppingCartLine,
+  RiArrowDownSLine,
+  RiArrowLeftSLine,
+  RiArrowRightSLine,
+  RiHomeLine,
+} from "react-icons/ri";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import products from "./products";
 import Promo from "./promo";
+import { fadeIn } from "../variants";
 
 export default function FeaturedProducts() {
+  //   const [cart, setCart] = useState({});
+
   return (
     <div className="bg-gray-custom min-h-screen">
       <div className="container mx-auto p-4">
+        <div className="mb-4">
+          <Link
+            to="/"
+            className="flex items-center text-gray-600 hover:text-gray-800"
+          >
+            <RiHomeLine className="mr-2" />
+            <span>Home</span>
+          </Link>
+        </div>
         <div className="flex justify-between items-center mb-8">
           <p>Showing 9 results of 50 Items</p>
           <div className="text-left">
@@ -25,39 +44,40 @@ export default function FeaturedProducts() {
           </div>
         </div>
 
-        <div className="mb-4">
-          <Link to="/" className="flex items-center text-gray-600 hover:text-gray-800">
-            <RiHomeLine className="mr-2" />
-            <span>Home</span>
-          </Link>
-        </div>
-
         <h2 className="text-2xl font-bold mb-8">Featured Products</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <motion.div
+          initial="hidden"
+          animate="show"
+          variants={fadeIn("up", 0.2)}
+          viewport={{ once: false, amount: 0.7 }}
+          className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
           {products.map((product) => (
-            <div key={product.id} className="flex flex-col items-center">
+            <motion.div
+              key={product.id}
+              className="flex flex-col items-center"
+              variants={fadeIn("up", 0.2)} // Pass direction and delay properly
+            >
               <div className="w-full flex justify-center">
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-48 object-contain"
+                  className="w-48 lg:w-64"
                 />
               </div>
-              <div className="w-full">
+              <div className="w-full lg:w-64">
                 <h3 className="text-base font-bold mt-4">{product.name}</h3>
                 <p className="text-gray-600 text-xs">{product.description}</p>
                 <div className="flex items-center justify-between mt-2">
                   <p className="text-sm font-bold">{product.price}</p>
-                  <Link to="/cart">
-                    <div className="bg-black text-white p-2 rounded">
-                      <RiShoppingCartLine />
-                    </div>
-                  </Link>
+                  <div className="relative bg-black text-white p-2 rounded cursor-pointer">
+                    Add to cart
+                  </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
         {/* Pagination */}
         <div className="flex justify-center items-center mt-8">
           <RiArrowLeftSLine className="cursor-pointer mx-2" />
@@ -86,7 +106,6 @@ export default function FeaturedProducts() {
           </div>
           <RiArrowRightSLine className="cursor-pointer mx-2" />
         </div>
-
         <Promo />
       </div>
     </div>

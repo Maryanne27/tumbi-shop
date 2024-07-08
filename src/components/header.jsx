@@ -18,7 +18,7 @@ export default function Header() {
 
   return (
     <div className="bg-black text-white px-7 py-4 flex justify-between items-center">
-      <div className="flex items-center space-x-6">
+      <div className="flex items-center space-x-8">
         <div className="flex flex-col text-center">
           <h1 className="text-md font-bold">TIMBU</h1>
           <span className="text-md">cloud shop</span>
@@ -26,7 +26,7 @@ export default function Header() {
         <div className="hidden md:flex space-x-6 text-sm">
           <ul className="flex space-x-6">
             <NavLink to="/">Store Front</NavLink>
-            <NavLink to="/about">About Us</NavLink>
+            {/* <NavLink to="/about">About Us</NavLink> */}
           </ul>
         </div>
       </div>
@@ -42,7 +42,7 @@ export default function Header() {
           {menuOpen ? <RiCloseLine size={24} /> : <RiMenu4Fill size={24} />}
         </button>
         <div className="hidden md:flex items-center space-x-4">
-          <div className="bg-white text-gray-400 p-1 flex items-center rounded-full">
+          <div className="bg-white text-gray-400 p-1 flex items-center ">
             <RiSearchLine size={20} />
             <input
               type="text"
@@ -50,10 +50,10 @@ export default function Header() {
               className="bg-transparent border-none outline-none px-2 text-black"
             />
           </div>
-          <NavLink to="/user" className="bg-white text-black p-2 rounded-full">
+          {/* <NavLink to="/user" className="bg-white text-black p-2 ">
             <RiUserLine />
-          </NavLink>
-          <NavLink to="/cart" className="bg-white text-black p-2 rounded-full">
+          </NavLink> */}
+          <NavLink to="/cart" className="bg-white text-black p-2 ">
             <RiShoppingCartLine />
           </NavLink>
         </div>
