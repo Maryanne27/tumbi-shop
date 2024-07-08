@@ -5,7 +5,6 @@ import {
   RiCloseLine,
   RiHomeLine,
   RiMenu4Fill,
-  RiUser2Line,
 } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
 import { context } from "../context/context";
@@ -84,15 +83,12 @@ export default function Header() {
             </button>
           </div>
           <ul className="flex flex-col space-y-4 text-sm w-full">
-            <li className="flex items-center space-x-2">
-              <RiUser2Line />
-              <span>Your Account</span>
-            </li>
-            <li className="flex items-center space-x-2">
+            
+            <li className="flex items-center space-x-2 cursor-pointer">
               <RiHomeLine />
               <NavLink to="/">Storefront</NavLink>
             </li>
-            <li className="flex items-center space-x-2">
+            <li className="flex items-center space-x-2 cursor-pointer">
               <RiSearchLine />
               <span>Search</span>
             </li>

@@ -1,19 +1,20 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   RiCalendarLine,
   RiArrowRightCircleLine,
   RiCheckboxCircleLine,
 } from "react-icons/ri";
-import products from "./products";
-import Card from "../assets/card.png";
 import { NavLink } from "react-router-dom";
+import Card from "../assets/card.png";
+import { context } from "../context/context";
 
 export default function Checkout() {
+  const { cart, clearCart } = useContext(context);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const cartProducts = products.slice(0, 3);
-  const subtotal = cartProducts.reduce(
-    (total, product) => total + parseFloat(product.price.replace("$", "")),
+  const subtotal = cart.reduce(
+    (total, product) =>
+      total + parseFloat(product.price.replace("$", "")) * product.quantity,
     0
   );
   const discount = subtotal * 0.1;
@@ -21,6 +22,7 @@ export default function Checkout() {
 
   const handlePay = () => {
     setIsModalOpen(true);
+    clearCart(); // Clear the cart after payment
   };
 
   const closeModal = () => {
@@ -30,8 +32,7 @@ export default function Checkout() {
   return (
     <div className="mx-auto p-4 mt-10 max-w-5xl">
       <div className="flex flex-col lg:flex-row gap-8">
-        {/* Payment Information Section */}
-        <div className="lg:w-1/3">
+        <div className="lg:w-1/3 order-2 lg:order-1">
           <div className="border border-bordergray p-4 mb-8">
             <h5 className="text-lg font-bold mb-6">Payment Information</h5>
             <div className="mb-4">
@@ -141,7 +142,7 @@ export default function Checkout() {
                   <input
                     type="text"
                     id="expiryDate"
-                    placeholder="04/2025"
+                    placeholder="12/24"
                     className="w-full p-2 border pr-10 text-black"
                   />
                   <RiCalendarLine className="absolute right-2 top-10 text-gray-400" />
@@ -156,55 +157,47 @@ export default function Checkout() {
                   <input
                     type="text"
                     id="cvv"
-                    placeholder="491"
+                    placeholder="123"
                     className="w-full p-2 border pr-10 text-black"
                   />
-                  <RiCalendarLine className="absolute right-2 top-10 text-gray-400" />
                 </div>
               </div>
             </form>
 
-            {/* Payment Summary Section */}
-            <div className="p-2 mb-8">
-              <div className="flex justify-between mb-4">
-                <p>Subtotal</p>
-                <p>${subtotal.toFixed(2)}</p>
-              </div>
-              <div className="flex justify-between mb-4">
-                <p>Tax (10%)</p>
-                <p>${(subtotal * 0.1).toFixed(2)}</p>
-              </div>
-              <div className="flex justify-between mb-4">
-                <p>Shipping</p>
-                <p>$0.00</p>
-              </div>
-              <hr />
-              <div className="flex justify-between mb-4">
-                <p className="font-bold">Total</p>
-                <p className="font-bold">${total.toFixed(2)}</p>
-              </div>
-              <div className="text-center">
-                <button
-                  className="bg-black text-white w-full py-2"
-                  onClick={handlePay}
-                >
-                  Pay ${total.toFixed(2)}
-                </button>
-              </div>
+            <div className="flex justify-between items-center mt-6">
+              <h3 className="text-base">Subtotal</h3>
+              <h3 className="text-base">${subtotal.toFixed(2)}</h3>
+            </div>
+            <div className="flex justify-between items-center mt-4">
+              <h3 className="text-base">Discount</h3>
+              <h3 className="text-base">-${discount.toFixed(2)}</h3>
+            </div>
+            <hr className="my-4" />
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold">Total</h3>
+              <h3 className="text-xl font-bold">${total.toFixed(2)}</h3>
+            </div>
+            <div className="text-center mt-6">
+              <button
+                onClick={handlePay}
+                className="bg-buttonblack text-white px-4 py-2 text-base w-full"
+              >
+                Pay
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Order Summary Section */}
-        <div className="lg:w-2/3">
+        <div className="lg:w-2/3 order-1 lg:order-2">
+          {/* Order Summary Section */}
           <div className="border border-bordergray p-4 mb-8">
             <div className="flex gap-2 items-center">
               <h3 className="text-xl font-bold">Order Summary</h3>
               <p className="bg-black text-white px-2 rounded-full text-sm flex justify-center items-center text-center">
-                {cartProducts.length}
+                {cart.length}
               </p>
             </div>
-            {cartProducts.map((product) => (
+            {cart.map((product) => (
               <div
                 key={product.id}
                 className="flex gap-6 mb-4 items-center mt-6"
@@ -217,11 +210,19 @@ export default function Checkout() {
                   />
                   <div>
                     <p className="font-bold">{product.name}</p>
-                    <p className="text-gray-500">XXL</p>
+                    <p className="text-gray-500">
+                      Quantity: {product.quantity}
+                    </p>
                   </div>
                 </div>
                 <div className="ml-auto">
-                  <p className="text-lg">{product.price}</p>
+                  <p className="text-lg">
+                    $
+                    {(
+                      parseFloat(product.price.replace("$", "")) *
+                      product.quantity
+                    ).toFixed(2)}
+                  </p>
                 </div>
               </div>
             ))}
@@ -300,21 +301,27 @@ export default function Checkout() {
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 text-center ">
-          <div className="bg-white p-6 rounded shadow-md text-center px-16 py-16">
-            <div className="flex justify-center items-center pb-3">
-              <RiCheckboxCircleLine size={60} />
-            </div>
-            <h2 className="text-lg font-bold mb-2">Payment Successful</h2>
-            <p className="mb-4">Your order is now on the way!</p>
-            <NavLink to="/">
-              <button
-                className="bg-black text-white py-2 px-4 rounded"
-                onClick={closeModal}
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg">
+            <h3 className="text-lg font-bold mb-4 flex items-center">
+              <RiCheckboxCircleLine className="mr-2 text-green-500" />
+              Payment Successful!
+            </h3>
+            <p className="mb-4">Thank you for your purchase.</p>
+            <button
+              onClick={closeModal}
+              className="bg-blue-500 text-white px-4 py-2 rounded-full"
+            >
+              Close
+            </button>
+            <div className="mt-4">
+              <NavLink
+                to="/"
+                className="bg-black text-white px-4 py-2 rounded-full"
               >
-                Go back to store
-              </button>
-            </NavLink>
+                Continue Shopping
+              </NavLink>
+            </div>
           </div>
         </div>
       )}

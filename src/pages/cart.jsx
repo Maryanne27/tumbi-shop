@@ -50,7 +50,7 @@ export default function Cart() {
       </nav>
 
       {removalMessage && (
-        <div className="flex mb-4 p-2 bg-lightblue text-darkblue w-1/2 mx-auto text-center justify-center items-center gap-2">
+        <div className="flex mb-4 p-2 bg-lightblue text-darkblue text-center justify-center items-center gap-2 text-nowrap whitespace-nowrap">
           <RiErrorWarningFill className="mr-2 flex justify-center items-center" />
           <span>{removalMessage}</span>
         </div>
@@ -160,7 +160,7 @@ export default function Cart() {
             Browse our products and discover our best deals
           </p>
           <Link to="/">
-            <button className="bg-orange-400 px-6 py-2 text-white font-medium mt-3">
+            <button className="bg-buttonblack px-6 py-2 text-white font-medium mt-3">
               Start shopping
             </button>
           </Link>
