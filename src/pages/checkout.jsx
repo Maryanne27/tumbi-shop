@@ -25,9 +25,6 @@ export default function Checkout() {
     clearCart(); // Clear the cart after payment
   };
 
-  // const closeModal = () => {
-  //   setIsModalOpen(false);
-  // };
 
   return (
     <div className="mx-auto p-4 mt-10 max-w-5xl">
@@ -301,34 +298,26 @@ export default function Checkout() {
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 text-center">
-          <div className="bg-white px-16 py-10  shadow-lg text-center">
-            <div className="flex items-center justify-center">
-              <RiCheckboxCircleLine
-                size={60}
-                className="mr-2 text-green-500 "
-              />
-            </div>
-            <h3 className="text-lg font-bold mb-4 flex items-center text-center justify-center">
-              Payment Successful
-            </h3>
-            <p className="mb-4">Thank you for your purchase.</p>
-            <div className="flex justify-center">
-              {/* <button
-              onClick={closeModal}
-              className="bg-buttonblack text-white "
-            >
-              Close
-            </button> */}
-              <div className="mt-4">
-                <NavLink to="/" className="bg-buttonblack text-white px-4 py-2">
-                  Go back to shop
-                </NavLink>
-              </div>
-            </div>
-          </div>
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 text-center">
+    <div className="bg-white px-16 py-10 shadow-lg text-center">
+      <div className="flex items-center justify-center">
+        <RiCheckboxCircleLine size={60} className="mr-2 text-green-500" />
+      </div>
+      <h3 className="text-lg font-bold mb-4 flex items-center justify-center">
+        Payment Successful
+      </h3>
+      <p className="mb-4">Thank you for your purchase.</p>
+      <div className="flex justify-center">
+        <div className="mt-4">
+          <NavLink to="/" className="bg-buttonblack text-white px-4 py-2">
+            Go back to shop
+          </NavLink>
         </div>
-      )}
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 }

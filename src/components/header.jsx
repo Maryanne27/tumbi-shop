@@ -17,6 +17,10 @@ export default function Header() {
     setMenuOpen(!menuOpen);
   };
 
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
+
   return (
     <div className="relative">
       <div
@@ -31,7 +35,7 @@ export default function Header() {
           </div>
           <div className="hidden md:flex space-x-6 text-sm">
             <ul className="flex space-x-6">
-              <NavLink to="/">Store Front</NavLink>
+              <NavLink to="/" onClick={closeMenu}>Store Front</NavLink>
             </ul>
           </div>
         </div>
@@ -83,14 +87,13 @@ export default function Header() {
             </button>
           </div>
           <ul className="flex flex-col space-y-4 text-sm w-full">
-            
             <li className="flex items-center space-x-2 cursor-pointer">
               <RiHomeLine />
-              <NavLink to="/">Storefront</NavLink>
+              <NavLink to="/" onClick={closeMenu}>Storefront</NavLink>
             </li>
             <li className="flex items-center space-x-2 cursor-pointer">
               <RiSearchLine />
-              <span>Search</span>
+              <span onClick={closeMenu}>Search</span>
             </li>
           </ul>
         </div>
