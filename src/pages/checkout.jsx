@@ -1,9 +1,16 @@
-import React from "react";
-import { RiCalendarLine, RiArrowRightCircleLine } from "react-icons/ri";
+import React, { useState } from "react";
+import {
+  RiCalendarLine,
+  RiArrowRightCircleLine,
+  RiCheckboxCircleLine,
+} from "react-icons/ri";
 import products from "./products";
 import Card from "../assets/card.png";
+import { NavLink } from "react-router-dom";
 
 export default function Checkout() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const cartProducts = products.slice(0, 3);
   const subtotal = cartProducts.reduce(
     (total, product) => total + parseFloat(product.price.replace("$", "")),
@@ -11,6 +18,14 @@ export default function Checkout() {
   );
   const discount = subtotal * 0.1;
   const total = subtotal - discount;
+
+  const handlePay = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <div className="mx-auto p-4 mt-10 max-w-5xl">
@@ -169,7 +184,10 @@ export default function Checkout() {
                 <p className="font-bold">${total.toFixed(2)}</p>
               </div>
               <div className="text-center">
-                <button className="bg-black text-white w-full py-2">
+                <button
+                  className="bg-black text-white w-full py-2"
+                  onClick={handlePay}
+                >
                   Pay ${total.toFixed(2)}
                 </button>
               </div>
@@ -269,7 +287,7 @@ export default function Checkout() {
                   </label>
                   <input type="text" id="phone" className="w-full p-2 border" />
                 </div>
-                <div className="mb-4 w-1/2">
+                <div className="mb-4 w-1/2 pb-3">
                   <label className="block text-gray-700 mb-2" htmlFor="email">
                     Email Address
                   </label>
@@ -280,6 +298,26 @@ export default function Checkout() {
           </div>
         </div>
       </div>
+
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 text-center ">
+          <div className="bg-white p-6 rounded shadow-md text-center px-16 py-16">
+            <div className="flex justify-center items-center pb-3">
+              <RiCheckboxCircleLine size={60} />
+            </div>
+            <h2 className="text-lg font-bold mb-2">Payment Successful</h2>
+            <p className="mb-4">Your order is now on the way!</p>
+            <NavLink to="/">
+              <button
+                className="bg-black text-white py-2 px-4 rounded"
+                onClick={closeModal}
+              >
+                Go back to store
+              </button>
+            </NavLink>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

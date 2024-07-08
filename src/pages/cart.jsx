@@ -1,14 +1,22 @@
-import React, { useContext } from 'react';
-import { RiDeleteBinLine, RiShoppingCartLine } from 'react-icons/ri';
-import { Link } from 'react-router-dom';
-import { context } from '../context/context';
+import React, { useContext } from "react";
+import { RiDeleteBinLine, RiShoppingCartLine } from "react-icons/ri";
+import { Link } from "react-router-dom";
+import { context } from "../context/context";
 
 export default function Cart() {
-  const { cart, clearCart } = useContext(context);
+  const {
+    cart,
+    clearCart,
+    removeFromCart,
+    incrementQuantity,
+    decrementQuantity,
+  } = useContext(context);
 
   // Calculate subtotal
   const subtotal = cart.reduce(
-    (total, product) => total + parseFloat(product.price.replace('$', '')),
+    (total, product) =>
+      total +
+      parseFloat(product.price.replace("$", "")) * (product.quantity || 1),
     0
   );
   const discount = subtotal * 0.1;
@@ -72,11 +80,24 @@ export default function Cart() {
                   <p className="text-checkoutgray text-sm mb-4">XXL</p>
                   <div className="flex justify-between items-center">
                     <div className="flex items-center space-x-2 bg-white border border-gray-300 rounded">
-                      <button className="p-2">-</button>
-                      <span>1</span>
-                      <button className="p-2">+</button>
+                      <button
+                        className="p-2"
+                        onClick={() => decrementQuantity(product.id)}
+                      >
+                        -
+                      </button>
+                      <span>{product.quantity || 1}</span>
+                      <button
+                        className="p-2"
+                        onClick={() => incrementQuantity(product.id)}
+                      >
+                        +
+                      </button>
                     </div>
-                    <button className="p-2 flex items-center">
+                    <button
+                      className="p-2 flex items-center"
+                      onClick={() => removeFromCart(product.id)}
+                    >
                       <RiDeleteBinLine className="mr-2" />
                     </button>
                   </div>
@@ -113,11 +134,13 @@ export default function Cart() {
         <div className="flex flex-col items-center justify-center h-64">
           <RiShoppingCartLine size={48} className="text-gray-500 mb-4" />
           <h2 className="text-lg font-bold">Your cart is empty</h2>
-          <p className="text-gray-600 text-center">Browse our products and discover our best deals </p>
-          <Link to='/'>
-          <button className='bg-orange-400 px-6 py-2 text-white font-medium mt-3'>
-            Start shopping
-          </button>
+          <p className="text-gray-600 text-center">
+            Browse our products and discover our best deals
+          </p>
+          <Link to="/">
+            <button className="bg-orange-400 px-6 py-2 text-white font-medium mt-3">
+              Start shopping
+            </button>
           </Link>
         </div>
       )}

@@ -1,12 +1,17 @@
-import React, { useState, useContext } from 'react';
-import { RiArrowDownSLine, RiArrowLeftSLine, RiArrowRightSLine, RiHomeLine } from 'react-icons/ri';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import products from './products';
-import Promo from './promo';
-import { fadeIn } from '../variants';
-import { context } from '../context/context';
-
+import React, { useState, useContext } from "react";
+import {
+  RiArrowDownSLine,
+  RiArrowLeftSLine,
+  RiArrowRightSLine,
+  RiHomeLine,
+  RiShoppingCartLine,
+} from "react-icons/ri";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import products from "./products";
+import Promo from "./promo";
+import { fadeIn } from "../variants";
+import { context } from "../context/context";
 
 const flipVariants = {
   hidden: { opacity: 0, rotateX: -90 },
@@ -111,9 +116,10 @@ export default function FeaturedProducts() {
                   <p className="text-sm font-bold">{product.price}</p>
                   <div
                     onClick={() => addToCart(product)}
-                    className="relative bg-black text-white p-2 text-xs lg:text-sm cursor-pointer"
+                    className="relative p-2 text-xs lg:text-sm cursor-pointer hover:bg-black hover:text-white transition-all duration-300 border border-black1 "
                   >
-                    Add to cart
+                    <span className="hidden lg:inline">Add to cart</span>
+                    <RiShoppingCartLine className="lg:hidden text-2xl" />
                   </div>
                 </div>
               </div>
