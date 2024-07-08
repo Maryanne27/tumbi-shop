@@ -1,26 +1,9 @@
 import React, { useState, useContext } from "react";
-import {
-  RiArrowDownSLine,
-  RiArrowLeftSLine,
-  RiArrowRightSLine,
-  RiHomeLine,
-  RiShoppingCartLine,
-} from "react-icons/ri";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { RiArrowDownSLine, RiShoppingCartLine } from "react-icons/ri";
+// import { Link } from "react-router-dom";
 import products from "./products";
 import Promo from "./promo";
-import { fadeIn } from "../variants";
 import { context } from "../context/context";
-
-const flipVariants = {
-  hidden: { opacity: 0, rotateX: -90 },
-  visible: {
-    opacity: 1,
-    rotateX: 0,
-    transition: { duration: 0.6, delay: 0.2 },
-  },
-};
 
 export default function FeaturedProducts() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -41,7 +24,7 @@ export default function FeaturedProducts() {
   return (
     <div className="bg-gray-custom min-h-screen">
       <div className="container mx-auto p-4">
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <Link
             to="/"
             className="flex items-center text-gray-600 hover:text-gray-800"
@@ -49,7 +32,7 @@ export default function FeaturedProducts() {
             <RiHomeLine className="mr-2" />
             <span>Home</span>
           </Link>
-        </div>
+        </div> */}
         <div className="flex justify-between items-center mb-8">
           <p>Showing 9 results of 50 Items</p>
           <div className="text-left relative">
@@ -82,31 +65,16 @@ export default function FeaturedProducts() {
         </div>
 
         <h2 className="text-2xl font-bold">Featured Products</h2>
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={fadeIn("up", 0.2)}
-          viewport={{ once: false, amount: 0.7 }}
-          className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {products.map((product) => (
-            <motion.div
-              key={product.id}
-              className="flex flex-col items-center"
-              variants={fadeIn("up", 0.2)}
-            >
-              <motion.div
-                className="w-full flex justify-center"
-                initial="hidden"
-                animate="visible"
-                variants={flipVariants}
-              >
+            <div key={product.id} className="flex flex-col items-center">
+              <div className="w-full flex justify-center transform transition duration-300 hover:scale-105 active:scale-95">
                 <img
                   src={product.image}
                   alt={product.name}
                   className="w-58 lg:w-64"
                 />
-              </motion.div>
+              </div>
               <div className="w-full lg:w-64">
                 <h3 className="text-base font-bold mt-4 mb-1">
                   {product.name}
@@ -116,43 +84,16 @@ export default function FeaturedProducts() {
                   <p className="text-sm font-bold">{product.price}</p>
                   <div
                     onClick={() => addToCart(product)}
-                    className="relative p-2 text-xs lg:text-sm cursor-pointer hover:bg-black hover:text-white transition-all duration-300 border border-black1 "
+                    className="relative p-2 text-xs lg:text-sm cursor-pointer hover:bg-black hover:text-white transition-all duration-300 border border-black1 rounded"
                   >
                     <span className="hidden lg:inline">Add to cart</span>
+
                     <RiShoppingCartLine className="lg:hidden text-2xl" />
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
-        {/* Pagination */}
-        <div className="flex justify-center items-center mt-28">
-          <RiArrowLeftSLine className="cursor-pointer mx-2" />
-          <div className="flex space-x-2">
-            <span className="cursor-pointer px-2 py-1 bg-white hover:bg-gray-100">
-              1
-            </span>
-            <span className="cursor-pointer px-2 py-1 bg-white hover:bg-gray-100">
-              2
-            </span>
-            <span className="cursor-pointer px-2 py-1 bg-white hover:bg-gray-100">
-              3
-            </span>
-            <span className="cursor-pointer px-2 py-1 bg-white hover:bg-gray-100">
-              4
-            </span>
-            <span className="cursor-pointer px-2 py-1 bg-white hover:bg-gray-100">
-              5
-            </span>
-            <span className="cursor-pointer px-2 py-1 bg-white hover:bg-gray-100">
-              ...
-            </span>
-            <span className="cursor-pointer px-2 py-1 bg-white hover:bg-gray-100">
-              16
-            </span>
-          </div>
-          <RiArrowRightSLine className="cursor-pointer mx-2" />
         </div>
 
         <Promo />

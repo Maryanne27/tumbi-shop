@@ -1,5 +1,9 @@
-import React, { useContext } from "react";
-import { RiDeleteBinLine, RiShoppingCartLine } from "react-icons/ri";
+import React, { useContext, useState } from "react";
+import {
+  RiDeleteBinLine,
+  RiShoppingCartLine,
+  RiErrorWarningFill,
+} from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { context } from "../context/context";
 
@@ -12,6 +16,8 @@ export default function Cart() {
     decrementQuantity,
   } = useContext(context);
 
+  const [removalMessage, setRemovalMessage] = useState("");
+
   // Calculate subtotal
   const subtotal = cart.reduce(
     (total, product) =>
@@ -21,6 +27,12 @@ export default function Cart() {
   );
   const discount = subtotal * 0.1;
   const total = subtotal - discount;
+
+  const handleRemoveFromCart = (productId, productName) => {
+    removeFromCart(productId);
+    setRemovalMessage(` ${productName} has been removed from cart.`);
+    setTimeout(() => setRemovalMessage(""), 3000); // Hides message after 3 seconds
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -36,6 +48,14 @@ export default function Cart() {
         <span className="mr-2">/</span>
         <span>Cart</span>
       </nav>
+
+      {removalMessage && (
+        <div className="flex mb-4 p-2 bg-lightblue text-darkblue w-1/2 mx-auto text-center justify-center items-center gap-2">
+          <RiErrorWarningFill className="mr-2 flex justify-center items-center" />
+          <span>{removalMessage}</span>
+        </div>
+      )}
+
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-xl font-bold mb-8">Cart</h2>
         {cart.length > 0 && (
@@ -96,7 +116,9 @@ export default function Cart() {
                     </div>
                     <button
                       className="p-2 flex items-center"
-                      onClick={() => removeFromCart(product.id)}
+                      onClick={() =>
+                        handleRemoveFromCart(product.id, product.name)
+                      }
                     >
                       <RiDeleteBinLine className="mr-2" />
                     </button>
