@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
-import { BsSearch, BsPerson } from 'react-icons/bs';
-import { CgShoppingCart } from 'react-icons/cg';
-import { FiMenu, FiX } from 'react-icons/fi';
-import { AiOutlineHome } from 'react-icons/ai';
-import { NavLink } from 'react-router-dom';
+import React, { useState } from "react";
+import {
+  RiSearchLine,
+  RiUserLine,
+  RiShoppingCartLine,
+  RiCloseLine,
+  RiHomeLine,
+  RiMenu4Fill,
+} from "react-icons/ri";
+import { NavLink } from "react-router-dom";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -15,59 +19,63 @@ export default function Header() {
   return (
     <div className="bg-black text-white px-7 py-4 flex justify-between items-center">
       <div className="flex items-center space-x-6">
-        <h1 className="text-2xl font-bold">TIMBU</h1>
-        <div className="hidden md:flex space-x-4 text-sm">
-          <ul className="flex space-x-4">
-            <NavLink>Store Front</NavLink>
-            <NavLink>About Us</NavLink>
-            <NavLink>Connect with us</NavLink>
+        <div className="flex flex-col text-center">
+          <h1 className="text-md font-bold">TIMBU</h1>
+          <span className="text-md">cloud shop</span>
+        </div>
+        <div className="hidden md:flex space-x-6 text-sm">
+          <ul className="flex space-x-6">
+            <NavLink to="/">Store Front</NavLink>
+            <NavLink to="/about">About Us</NavLink>
           </ul>
         </div>
       </div>
 
       <div className="flex items-center space-x-4">
-        <button onClick={toggleMenu} className="md:hidden">
-          {menuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+        <button className="md:hidden inline-flex items-center bg-white p-2 text-black1">
+          <RiSearchLine size={24} />
         </button>
-        <BsSearch size={20} className="md:hidden" />
+        <button
+          onClick={toggleMenu}
+          className="md:hidden inline-flex items-center bg-white text-black1 p-2"
+        >
+          {menuOpen ? <RiCloseLine size={24} /> : <RiMenu4Fill size={24} />}
+        </button>
         <div className="hidden md:flex items-center space-x-4">
-          <div className="bg-white text-gray-400 p-1 flex items-center">
-            <BsSearch size={20} />
+          <div className="bg-white text-gray-400 p-1 flex items-center rounded-full">
+            <RiSearchLine size={20} />
             <input
               type="text"
               placeholder="search"
-              className="bg-transparent border-none outline-none px-2"
+              className="bg-transparent border-none outline-none px-2 text-black"
             />
           </div>
-          <NavLink to='user' className="bg-white text-black p-2 rounded">
-            <BsPerson />
+          <NavLink to="/user" className="bg-white text-black p-2 rounded-full">
+            <RiUserLine />
           </NavLink>
-          <NavLink to='cart' className="bg-white text-black p-2 rounded">
-            <CgShoppingCart />
+          <NavLink to="/cart" className="bg-white text-black p-2 rounded-full">
+            <RiShoppingCartLine />
           </NavLink>
-          {/* <NavLink to='/' className="bg-white text-black p-2 rounded">
-            <AiOutlineHome />
-          </NavLink> */}
         </div>
       </div>
 
       {menuOpen && (
-        <div className="absolute top-16 left-0 w-full bg-black text-white flex flex-col items-center md:hidden">
-          <ul className="flex flex-col space-y-4 text-sm p-4">
+        <div className="absolute top-16 left-0 w-full bg-white text-black flex flex-col items-start p-4 md:hidden">
+          <ul className="flex flex-col space-y-4 text-sm w-full">
             <li className="flex items-center space-x-2">
-              <BsPerson />
-              <span>User</span>
+              <RiUserLine />
+              <NavLink to="/user">User</NavLink>
             </li>
             <li className="flex items-center space-x-2">
-              <CgShoppingCart />
-              <span>Cart</span>
+              <RiShoppingCartLine />
+              <NavLink to="/cart">Cart</NavLink>
             </li>
             <li className="flex items-center space-x-2">
-              <AiOutlineHome />
-              <span>Storefront</span>
+              <RiHomeLine />
+              <NavLink to="/">Storefront</NavLink>
             </li>
             <li className="flex items-center space-x-2">
-              <BsSearch />
+              <RiSearchLine />
               <span>Search</span>
             </li>
           </ul>
