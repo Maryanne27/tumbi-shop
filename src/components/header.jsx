@@ -1,7 +1,15 @@
-import React, { useContext, useState } from 'react';
-import { RiSearchLine, RiShoppingCartLine, RiCloseLine, RiHomeLine, RiMenu4Fill } from 'react-icons/ri';
-import { NavLink } from 'react-router-dom';
-import { context } from '../context/context';
+import React, { useContext, useState } from "react";
+import {
+  RiSearchLine,
+  RiShoppingCartLine,
+  RiCloseLine,
+  RiHomeLine,
+  RiMenu4Fill,
+  RiUser2Fill,
+  RiUser2Line,
+} from "react-icons/ri";
+import { NavLink } from "react-router-dom";
+import { context } from "../context/context";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -25,9 +33,16 @@ export default function Header() {
         </div>
       </div>
 
-      <div className="flex items-center space-x-4">
-        <button className="md:hidden inline-flex items-center bg-white p-2 text-black1">
-          <RiSearchLine size={24} />
+      <div className="flex items-center space-x-4 relative">
+        <button className="md:hidden inline-flex items-center bg-white p-2 text-black1 relative">
+            <NavLink to='/cart'>
+          <RiShoppingCartLine size={24} />
+          {cartQuantity > 0 && (
+            <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-600 text-white text-xs rounded-full px-2 py-1">
+              {cartQuantity}
+            </span>
+          )}
+          </NavLink>
         </button>
         <button
           onClick={toggleMenu}
@@ -35,7 +50,7 @@ export default function Header() {
         >
           {menuOpen ? <RiCloseLine size={24} /> : <RiMenu4Fill size={24} />}
         </button>
-        <div className="hidden md:flex items-center space-x-4">
+        <div className="hidden md:flex items-center space-x-4 relative">
           <div className="bg-white text-gray-400 p-1 flex items-center ">
             <RiSearchLine size={20} />
             <input
@@ -47,7 +62,7 @@ export default function Header() {
           <NavLink to="/cart" className="bg-white text-black p-2 relative">
             <RiShoppingCartLine />
             {cartQuantity > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2 py-1">
+              <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-600 text-white text-xs rounded-full px-2 py-1">
                 {cartQuantity}
               </span>
             )}
@@ -59,8 +74,8 @@ export default function Header() {
         <div className="absolute top-16 left-0 w-full h-40 bg-white text-black flex flex-col items-start p-4 md:hidden">
           <ul className="flex flex-col space-y-4 text-sm w-full">
             <li className="flex items-center space-x-2">
-              <RiShoppingCartLine />
-              <NavLink to="/cart">Cart</NavLink>
+              <RiUser2Line />
+              <span>Your Account</span>
             </li>
             <li className="flex items-center space-x-2">
               <RiHomeLine />
