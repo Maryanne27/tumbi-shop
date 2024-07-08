@@ -70,8 +70,7 @@ export default function FeaturedProducts() {
                 <p className="text-gray-600 text-xs">{product.description}</p>
                 <div className="flex items-center justify-between mt-2">
                   <p className="text-sm font-bold">{product.price}</p>
-                  <div className="relative bg-black text-white p-2 rounded cursor-pointer">
-                    Add to cart
+                  <div className="relative bg-black text-white p-2 rounded cursor-pointer">Add to cart
                   </div>
                 </div>
               </div>
