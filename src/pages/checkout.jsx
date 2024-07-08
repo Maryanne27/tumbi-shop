@@ -301,26 +301,32 @@ export default function Checkout() {
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg">
-            <h3 className="text-lg font-bold mb-4 flex items-center">
-              <RiCheckboxCircleLine className="mr-2 text-green-500" />
-              Payment Successful!
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 text-center">
+          <div className="bg-white px-16 py-10  shadow-lg text-center">
+              <div className="flex items-center justify-center">
+
+              <RiCheckboxCircleLine size={60} className="mr-2 text-green-500 " />
+              </div>
+            <h3 className="text-lg font-bold mb-4 flex items-center text-center justify-center">
+              Payment Successful
             </h3>
             <p className="mb-4">Thank you for your purchase.</p>
-            <button
+            <div className="flex justify-center">
+
+            {/* <button
               onClick={closeModal}
-              className="bg-blue-500 text-white px-4 py-2 rounded-full"
+              className="bg-buttonblack text-white "
             >
               Close
-            </button>
+            </button> */}
             <div className="mt-4">
               <NavLink
                 to="/"
-                className="bg-black text-white px-4 py-2 rounded-full"
+                className="bg-buttonblack text-white px-4 py-2"
               >
-                Continue Shopping
+                Go back to shop
               </NavLink>
+            </div>
             </div>
           </div>
         </div>
