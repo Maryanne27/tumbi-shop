@@ -1,5 +1,5 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { RiArrowRightSLine } from "react-icons/ri";
 import bg1 from "../assets/bg.JPG";
 import bg2 from "../assets/bg2.svg";
@@ -12,24 +12,35 @@ import brand6 from "../assets/brand6.svg";
 
 const textVariants = {
   hidden: { opacity: 0, x: -50 },
-  visible: { opacity: 1, x: 0, transition: { duration: 1 } }
+  visible: { opacity: 1, x: 0, transition: { duration: 1 } },
 };
 
 const imageVariants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 1 } }
+  visible: { opacity: 1, transition: { duration: 1 } },
 };
 
 const buttonVariants = {
   hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 1 } }
+  visible: { opacity: 1, y: 0, transition: { duration: 1 } },
 };
 
 const brandVariants = {
-  hover: { scale: 1.1, transition: { duration: 0.3 } }
+  hidden: { opacity: 0, rotateX: -90 },
+  visible: {
+    opacity: 1,
+    rotateX: 0,
+    transition: { duration: 0.5, delay: 0.2 },
+  },
+  hover: { scale: 1.1, transition: { duration: 0.3 } },
 };
 
 export default function Promo() {
+  const promoRef = useRef(null);
+  const brandsRef = useRef(null);
+  const promoInView = useInView(promoRef, { once: true, threshold: 0.5 });
+  const brandsInView = useInView(brandsRef, { once: true, threshold: 0.5 });
+
   return (
     <div>
       <div className="flex justify-center items-center my-16">
@@ -37,8 +48,9 @@ export default function Promo() {
           <motion.div
             className="flex-1"
             initial="hidden"
-            animate="visible"
+            animate={promoInView ? "visible" : "hidden"}
             variants={imageVariants}
+            ref={promoRef}
           >
             <img
               src={bg2}
@@ -58,7 +70,7 @@ export default function Promo() {
               <motion.p
                 className="text-gray1 text-base mb-2"
                 initial="hidden"
-                animate="visible"
+                animate={promoInView ? "visible" : "hidden"}
                 variants={textVariants}
               >
                 Limited offer
@@ -66,7 +78,7 @@ export default function Promo() {
               <motion.h3
                 className="text-white text-2xl font-bold mb-4"
                 initial="hidden"
-                animate="visible"
+                animate={promoInView ? "visible" : "hidden"}
                 variants={textVariants}
               >
                 30% Off this weekend and get free gift
@@ -74,7 +86,7 @@ export default function Promo() {
               <motion.button
                 className="bg-white text-black px-4 py-2 flex items-center"
                 initial="hidden"
-                animate="visible"
+                animate={promoInView ? "visible" : "hidden"}
                 variants={buttonVariants}
               >
                 Shop Now <RiArrowRightSLine className="ml-2" />
@@ -90,18 +102,26 @@ export default function Promo() {
           Our Trusted Brands
         </h3>
         <div className="bg-black p-4">
-          <div className="bg-white grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 p-4 justify-center items-center">
-            {[brand1, brand2, brand3, brand4, brand5, brand6].map((brand, index) => (
-              <motion.img
-                key={index}
-                src={brand}
-                alt={`brand ${index + 1}`}
-                className="w-24 md:w-32 mx-auto"
-                variants={brandVariants}
-                whileHover="hover"
-              />
-            ))}
-          </div>
+          <motion.div
+            className="bg-white grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 p-4 justify-center items-center"
+            ref={brandsRef}
+            initial="hidden"
+            animate={brandsInView ? "visible" : "hidden"}
+            variants={brandVariants}
+          >
+            {[brand1, brand2, brand3, brand4, brand5, brand6].map(
+              (brand, index) => (
+                <motion.img
+                  key={index}
+                  src={brand}
+                  alt={`brand ${index + 1}`}
+                  className="w-24 md:w-32 mx-auto"
+                  variants={brandVariants}
+                  whileHover="hover"
+                />
+              )
+            )}
+          </motion.div>
         </div>
       </div>
     </div>

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   RiSearchLine,
-  RiUserLine,
   RiShoppingCartLine,
   RiCloseLine,
   RiHomeLine,
@@ -60,12 +59,9 @@ export default function Header() {
       </div>
 
       {menuOpen && (
-        <div className="absolute top-16 left-0 w-full bg-white text-black flex flex-col items-start p-4 md:hidden">
+        <div className="absolute top-16 left-0 w-full h-40 bg-white text-black flex flex-col items-start p-4 md:hidden">
           <ul className="flex flex-col space-y-4 text-sm w-full">
-            <li className="flex items-center space-x-2">
-              <RiUserLine />
-              <NavLink to="/user">User</NavLink>
-            </li>
+            
             <li className="flex items-center space-x-2">
               <RiShoppingCartLine />
               <NavLink to="/cart">Cart</NavLink>
