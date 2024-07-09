@@ -59,35 +59,18 @@ export default function Footer() {
 
       {/* Footer section */}
       <div className="bg-gray-200 text-black py-10 px-4 md:px-10">
-        <div className="container mx-auto flex flex-wrap justify-between items-start space-y-6 md:space-y-0">
+        <div className="container mx-auto  text-center pb-2">
           <motion.div
-            variants={sectionVariants(0.4)}
-            className="w-full md:w-1/4"
+            variants={sectionVariants(0.8)}
           >
             <h5 className="text-xl font-bold mb-2">
               Timbu <span className="font-light">cloud shop</span>
             </h5>
             <p className="text-sm md:text-base">
               Specializes in providing high quality and stylish products for
+              Specializes in providing high quality and stylish products for
               your cupboard
             </p>
-          </motion.div>
-          <motion.div
-            variants={sectionVariants(0.6)}
-            className="w-full md:w-1/4"
-          >
-            <h5 className="text-xl font-bold mb-2">Company</h5>
-            <p className="text-sm md:text-base">About Us</p>
-            <p className="text-sm md:text-base">Support Us</p>
-          </motion.div>
-          <motion.div
-            variants={sectionVariants(0.8)}
-            className="w-full md:w-1/4"
-          >
-            <h5 className="text-xl font-bold mb-2">Support</h5>
-            <p className="text-sm md:text-base">FAQ</p>
-            <p className="text-sm md:text-base">Cookie Policy</p>
-            <p className="text-sm md:text-base">Terms of Use</p>
           </motion.div>
         </div>
         <motion.div
