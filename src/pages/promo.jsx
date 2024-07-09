@@ -84,7 +84,7 @@ export default function Promo() {
                 30% Off this weekend and get free gift
               </motion.h3>
               <motion.button
-                className="bg-white text-black px-4 py-2 flex items-center"
+                className="bg-white text-black px-4 py-2 flex items-center hover:bg-green-200"
                 initial="hidden"
                 animate={promoInView ? "visible" : "hidden"}
                 variants={buttonVariants}

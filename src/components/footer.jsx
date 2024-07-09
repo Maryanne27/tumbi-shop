@@ -63,11 +63,11 @@ export default function Footer() {
           <motion.div
             variants={sectionVariants(0.8)}
           >
-            <h5 className="text-xl font-bold mb-2">
-              Timbu <span className="font-light">cloud shop</span>
+            <h5 className="text-2xl font-bold">
+              Timbu 
             </h5>
-            <p className="text-sm md:text-base">
-              Specializes in providing high quality and stylish products for
+              <span className=" text-2xl -mt-16">cloud shop</span>
+            <p className="text-sm md:text-base pt-4">
               Specializes in providing high quality and stylish products for
               your cupboard
             </p>
