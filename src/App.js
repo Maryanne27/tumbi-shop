@@ -1,6 +1,6 @@
 import Layout from "./components/layout";
 import Checkout from "./pages/checkout";
-import Home from "./pages/featuredproducts";
+import Home from "./pages/Products";
 import Cart from "./pages/cart";
 import {
   createBrowserRouter,
@@ -8,6 +8,9 @@ import {
   Route,
 } from "react-router-dom";
 import { RouterProvider } from "react-router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient()
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,10 +24,11 @@ const router = createBrowserRouter(
 
 function App() {
   return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  );
+    <QueryClientProvider client={queryClient}>
+    <RouterProvider router={router} />
+  </QueryClientProvider>
+);
 }
 
 export default App;
+

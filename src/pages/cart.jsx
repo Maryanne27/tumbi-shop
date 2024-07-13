@@ -22,7 +22,8 @@ export default function Cart() {
   const subtotal = cart.reduce(
     (total, product) =>
       total +
-      parseFloat(product.price.replace("$", "")) * (product.quantity || 1),
+      parseFloat(product.current_price[0]?.USD || "0") *
+        (product.quantity || 1),
     0
   );
   const discount = subtotal * 0.1;
@@ -78,28 +79,28 @@ export default function Cart() {
           <div className="flex-1">
             {cart.map((product) => (
               <div
-                key={product.id}
-                className="border border-b-checkoutgray mb-4 flex items-start"
+                key={product.unique_id}
+                className="border border-b-checkoutgray pb-4 flex items-start"
               >
                 <img
-                  src={product.image}
+                  src={`https://api.timbu.cloud/images/${product?.photos[0]?.url}`}
                   alt={product.name}
                   className="w-40 h-40 lg:w-52 lg:h-52"
                 />
                 <div className="flex-1 ">
                   <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-xs lg:text-lg font-medium lg:font-bold">
+                    <h3 className="text-xs lg:text-lg font-medium lg:font-bold ml-8">
                       {product.name}
                     </h3>
                     <div className="text-right">
                       <p className="font-normal text-sm lg:font-bold">
-                        {product.price}
+                        ${product.current_price[0]?.USD || "N/A"}
                       </p>
                     </div>
                   </div>
-                  <p className="text-checkoutgray text-sm mb-4">XXL</p>
+                  <p className="text-checkoutgray text-sm mb-4 ml-8">XXL</p>
                   <div className="flex justify-between items-center">
-                    <div className="flex items-center space-x-2 bg-white border border-gray-300 rounded">
+                    <div className="flex items-center space-x-2 bg-white border border-gray-300 ml-8">
                       <button
                         className="p-2"
                         onClick={() => decrementQuantity(product.id)}

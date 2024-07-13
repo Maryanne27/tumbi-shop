@@ -1,86 +1,176 @@
-import image1 from "../assets/1.svg";
-import image2 from "../assets/2.svg";
-import image3 from "../assets/3.svg";
-import image4 from "../assets/4.svg";
-import image5 from "../assets/5.svg";
-import image6 from "../assets/6.svg";
-import image7 from "../assets/7.svg";
-import image8 from "../assets/8.svg";
-import image9 from "../assets/9.svg";
+import React, { useState, useContext } from "react";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { RiArrowDownSLine, RiShoppingCartLine, RiAddLine, RiSubtractLine, RiErrorWarningFill, RiArrowRightSLine, RiArrowLeftSLine } from "react-icons/ri";
+import Promo from "./promo";
+import { context } from "../context/context";
 
-const products = [
-  {
-    id: 1,
-    name: "Autumn Wear",
-    description:
-      "Timeless and modern elegant fashion for the summer all size available",
-    price: "$150.00",
-    image: image1,
-  },
-  {
-    id: 2,
-    name: "Sleekstyle Couture",
-    description:
-      "Elegant suit features a sophisticated design with luxurious fabric, perfect for any occasion.",
-    price: "$150.00",
-    image: image2,
-  },
-  {
-    id: 3,
-    name: "NeatNexus",
-    description:
-      "Timeless silhouette and exquisite details make it a wardrobe essential for effortless chic",
-    price: "$150.00",
-    image: image3,
-  },
-  {
-    id: 4,
-    name: "Office Runway",
-    description:
-      "Our classic t-shirt. Made from soft, high-quality cotton, it features a perfect fit",
-    price: "$29.99",
-    image: image9,
-  },
-  {
-    id: 5,
-    name: "Classic men combo",
-    description:
-      "Crafted from premium fabric, it offers a relaxed fit and modern look",
-    price: "$150.00",
-    image: image4,
-  },
-  {
-    id: 6,
-    name: "Autumn Jumper",
-    description:
-      "Made from soft, high-quality knit, it features a relaxed fit and classic design.",
-    price: "$150.00",
-    image: image5,
-  },
-  {
-    id: 7,
-    name: "Fanel Turtleneck",
-    description:
-      "luxurious fabric, it offers a snug fit and sophisticated style.",
-    price: "$29.99",
-    image: image8,
-  },
-  {
-    id: 8,
-    name: "Slender gown",
-    description:
-      "Perfect for layering or wearing alone, its a versatile addition to any wardrobe",
-    price: "$150.00",
-    image: image6,
-  },
-  {
-    id: 9,
-    name: "Turtleneck Givenchy",
-    description:
-      "Embrace timeless elegance with our chic turtleneck. Crafted from soft, luxurious fabric.",
-    price: "$150.00",
-    image: image7,
-  },
-];
+export default function Products() {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [sortOption, setSortOption] = useState("popularity");
+  const { addToCart, cart, incrementQuantity, decrementQuantity } = useContext(context);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage] = useState(9);
+  const [message, setMessage] = useState("");
+  const [totalPages, setTotalPages] = useState(1);
 
-export default products;
+  // const response = await axios.get("https://timbu-get-single-product.reavdev.workers.dev/products"
+
+  const fetchProducts = async ({ queryKey }) => {
+    const [, page] = queryKey;
+    const response = await axios.get("api/products", {
+      params: {
+        organization_id: "7b59152ffec240b3816027d241f05c93",
+        Appid: "OAX7IL8QDFZH0VY",
+        Apikey: "72eda6187cbb4106b975e9d2d616073420240712142534062960",
+        page: page,
+        size: productsPerPage,
+      },
+    });
+    setTotalPages(response.data.totalPages);
+    return response.data.items;
+  };
+
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["products", currentPage],
+    queryFn: fetchProducts,
+    keepPreviousData: true,
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading data, Refresh Page</div>;
+
+  const handleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
+  };
+
+  const handleSortOption = (option) => {
+    setSortOption(option);
+    setIsDropdownOpen(false);
+  };
+
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    setMessage("Item added to cart");
+    setTimeout(() => setMessage(""), 2000);
+  };
+
+  const sortOptions = ["popularity", "highest price", "lowest price", "newest"];
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  return (
+    <div className="bg-gray-custom min-h-screen">
+      <div className="container mx-auto p-4">
+        {message && (
+          <div className="flex mb-4 p-2 bg-lightblue text-darkblue text-center justify-center items-center gap-2 text-nowrap whitespace-nowrap">
+            <RiErrorWarningFill className="mr-2 flex justify-center items-center" />
+            <span>{message}</span>
+          </div>
+        )}
+
+        <div className="flex justify-between items-center mb-8">
+          <p>
+            Showing <b className="font-bold">{data.length}</b> results of{" "}
+            <b className="font-bold">{data.length}</b> Items
+          </p>
+          <div className="text-left relative">
+            <div className="flex items-center gap-4">
+              <p>Sorted by</p>
+              <button
+                type="button"
+                onClick={handleDropdown}
+                className="flex justify-center border border-black shadow-sm px-4 py-2 bg-transparent text-sm font-medium text-gray-700 hover:bg-gray-50"
+                id="menu-button"
+              >
+                {sortOption}
+                <RiArrowDownSLine className="ml-2 text-center" />
+              </button>
+              {isDropdownOpen && (
+                <div className="absolute z-10 w-40 bg-white border left-12 border-gray-300 shadow-lg">
+                  {sortOptions.map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => handleSortOption(option)}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <h2 className="text-2xl font-bold">Featured Products</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {data.map((product) => {
+            const cartItem = cart.find((item) => item.id === product.id);
+            return (
+              <div key={product.unique_id} className="flex flex-col items-center">
+                <div className="w-full flex justify-center transform transition duration-300 hover:scale-105 active:scale-95">
+                  <img
+                    src={`https://api.timbu.cloud/images/${product.photos[0]?.url}`}
+                    alt={product.name}
+                    className="w-58 lg:w-64"
+                  />
+                </div>
+                <div className="w-full lg:w-64">
+                  <h3 className="text-base font-bold mt-4 mb-1">{product.name}</h3>
+                  <p className="text-gray-600 text-xs">{product.description}</p>
+                  <div className="flex items-center justify-between mt-2">
+                    <p className="text-sm font-bold">${product?.current_price[0]?.USD || "N/A"}</p>
+                    <div className="flex items-center">
+                      {cartItem ? (
+                        <div className="flex items-center">
+                          <button onClick={() => decrementQuantity(product.id)}>
+                            <RiSubtractLine className="text-2xl" />
+                          </button>
+                          <span className="px-2">{cartItem.quantity}</span>
+                          <button onClick={() => incrementQuantity(product.id)}>
+                            <RiAddLine className="text-2xl" />
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => handleAddToCart(product)}
+                          className="relative p-2 text-xs lg:text-sm cursor-pointer hover:bg-black hover:text-white transition-all duration-300 border border-black rounded"
+                        >
+                          <span className="hidden lg:inline">Add to cart</span>
+                          <RiShoppingCartLine className="lg:hidden text-2xl" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="flex justify-center items-center mt-8">
+          <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className="mx-2">
+            <RiArrowLeftSLine />
+          </button>
+          {[...Array(totalPages)].map((_, i) => (
+            <button
+              key={i}
+              onClick={() => handlePageChange(i + 1)}
+              className={`mx-1 px-2 py-1 rounded ${currentPage === i + 1 ? "bg-gray-300" : "bg-white hover:bg-gray-100"}`}
+            >
+              {i + 1}
+            </button>
+          ))}
+          <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className="mx-2">
+            <RiArrowRightSLine />
+          </button>
+        </div>
+
+        <Promo />
+      </div>
+    </div>
+  );
+}
