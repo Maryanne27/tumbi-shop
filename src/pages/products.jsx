@@ -1,20 +1,27 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import { RiArrowDownSLine, RiShoppingCartLine, RiAddLine, RiSubtractLine, RiErrorWarningFill, RiArrowRightSLine, RiArrowLeftSLine } from "react-icons/ri";
+import {
+  RiArrowDownSLine,
+  RiShoppingCartLine,
+  RiAddLine,
+  RiSubtractLine,
+  RiErrorWarningFill,
+  RiArrowRightSLine,
+  RiArrowLeftSLine,
+} from "react-icons/ri";
 import Promo from "./promo";
 import { context } from "../context/context";
 
 export default function Products() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [sortOption, setSortOption] = useState("popularity");
-  const { addToCart, cart, incrementQuantity, decrementQuantity } = useContext(context);
+  const { addToCart, cart, incrementQuantity, decrementQuantity } =
+    useContext(context);
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(9);
   const [message, setMessage] = useState("");
-  const [totalPages, setTotalPages] = useState(1);
-
-  // const response = await axios.get("https://timbu-get-single-product.reavdev.workers.dev/products"
+  const [totalItems, setTotalItems] = useState(0);
 
   const fetchProducts = async ({ queryKey }) => {
     const [, page] = queryKey;
@@ -27,7 +34,7 @@ export default function Products() {
         size: productsPerPage,
       },
     });
-    setTotalPages(response.data.totalPages);
+    setTotalItems(response.data.total);
     return response.data.items;
   };
 
@@ -39,6 +46,8 @@ export default function Products() {
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading data, Refresh Page</div>;
+
+  const totalPages = Math.ceil(totalItems / productsPerPage);
 
   const handleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
@@ -74,7 +83,7 @@ export default function Products() {
         <div className="flex justify-between items-center mb-8">
           <p>
             Showing <b className="font-bold">{data.length}</b> results of{" "}
-            <b className="font-bold">{data.length}</b> Items
+            <b className="font-bold">{totalItems}</b> Items
           </p>
           <div className="text-left relative">
             <div className="flex items-center gap-4">
@@ -105,33 +114,40 @@ export default function Products() {
           </div>
         </div>
 
-        <h2 className="text-2xl font-bold">Featured Products</h2>
+        <h2 className="text-2xl font-bold pb-5">Featured Products</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {data.map((product) => {
             const cartItem = cart.find((item) => item.id === product.id);
             return (
-              <div key={product.unique_id} className="flex flex-col items-center">
+              <div
+                key={product.unique_id}
+                className="flex flex-col items-center"
+              >
                 <div className="w-full flex justify-center transform transition duration-300 hover:scale-105 active:scale-95">
                   <img
                     src={`https://api.timbu.cloud/images/${product.photos[0]?.url}`}
                     alt={product.name}
-                    className="w-58 lg:w-64"
+                    className="w-40 h-40 lg:w-80 lg:h-96"
                   />
                 </div>
                 <div className="w-full lg:w-64">
-                  <h3 className="text-base font-bold mt-4 mb-1">{product.name}</h3>
+                  <h3 className="text-base font-bold mt-4 mb-1">
+                    {product.name}
+                  </h3>
                   <p className="text-gray-600 text-xs">{product.description}</p>
                   <div className="flex items-center justify-between mt-2">
-                    <p className="text-sm font-bold">${product?.current_price[0]?.USD || "N/A"}</p>
+                    <p className="text-sm font-bold">
+                      {product?.current_price[0]?.NGN || "N/A"}
+                    </p>
                     <div className="flex items-center">
                       {cartItem ? (
-                        <div className="flex items-center">
+                        <div className="flex items-center bg-white">
                           <button onClick={() => decrementQuantity(product.id)}>
                             <RiSubtractLine className="text-2xl" />
                           </button>
                           <span className="px-2">{cartItem.quantity}</span>
                           <button onClick={() => incrementQuantity(product.id)}>
-                            <RiAddLine className="text-2xl" />
+                            <RiAddLine className="text-xl" />
                           </button>
                         </div>
                       ) : (
@@ -152,19 +168,31 @@ export default function Products() {
         </div>
 
         <div className="flex justify-center items-center mt-8">
-          <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className="mx-2">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="mx-2"
+          >
             <RiArrowLeftSLine />
           </button>
           {[...Array(totalPages)].map((_, i) => (
             <button
               key={i}
               onClick={() => handlePageChange(i + 1)}
-              className={`mx-1 px-2 py-1 rounded ${currentPage === i + 1 ? "bg-gray-300" : "bg-white hover:bg-gray-100"}`}
+              className={`mx-1 px-3 py-1  ${
+                currentPage === i + 1
+                  ? "bg-gray-300"
+                  : "bg-white hover:bg-gray-100"
+              }`}
             >
               {i + 1}
             </button>
           ))}
-          <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className="mx-2">
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="mx-2"
+          >
             <RiArrowRightSLine />
           </button>
         </div>

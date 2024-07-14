@@ -22,7 +22,7 @@ export default function Cart() {
   const subtotal = cart.reduce(
     (total, product) =>
       total +
-      parseFloat(product.current_price[0]?.USD || "0") *
+      parseFloat(product.current_price[0]?.NGN || "0") *
         (product.quantity || 1),
     0
   );
@@ -32,7 +32,7 @@ export default function Cart() {
   const handleRemoveFromCart = (productId, productName) => {
     removeFromCart(productId);
     setRemovalMessage(` ${productName} has been removed from cart.`);
-    setTimeout(() => setRemovalMessage(""), 3000); // Hides message after 3 seconds
+    setTimeout(() => setRemovalMessage(""), 3000);
   };
 
   return (
@@ -94,7 +94,7 @@ export default function Cart() {
                     </h3>
                     <div className="text-right">
                       <p className="font-normal text-sm lg:font-bold">
-                        ${product.current_price[0]?.USD || "N/A"}
+                        ${product.current_price[0]?.NGN}
                       </p>
                     </div>
                   </div>
