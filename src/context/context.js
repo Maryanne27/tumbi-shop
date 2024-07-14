@@ -4,6 +4,7 @@ export const context = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const addToCart = (product) => {
     setCart((prevCart) => {
@@ -61,6 +62,8 @@ export const CartProvider = ({ children }) => {
         removeFromCart,
         incrementQuantity,
         decrementQuantity,
+        searchQuery,
+        setSearchQuery,
       }}
     >
       {children}

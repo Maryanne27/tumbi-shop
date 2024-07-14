@@ -11,7 +11,7 @@ import { context } from "../context/context";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { cartQuantity } = useContext(context);
+  const { cartQuantity, setSearchQuery } = useContext(context);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -19,6 +19,10 @@ export default function Header() {
 
   const closeMenu = () => {
     setMenuOpen(false);
+  };
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
   };
 
   return (
@@ -64,6 +68,7 @@ export default function Header() {
                 type="text"
                 placeholder="search"
                 className="bg-transparent border-none outline-none px-2 text-black"
+                onChange={handleSearch} 
               />
             </div>
             <NavLink to="/cart" className="bg-white text-black p-2 relative">

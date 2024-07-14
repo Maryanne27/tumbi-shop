@@ -16,7 +16,7 @@ import { context } from "../context/context";
 export default function Products() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [sortOption, setSortOption] = useState("popularity");
-  const { addToCart, cart, incrementQuantity, decrementQuantity } =
+  const { addToCart, cart, incrementQuantity, decrementQuantity, searchQuery } =
     useContext(context);
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(9);
@@ -67,8 +67,17 @@ export default function Products() {
   const sortOptions = ["popularity", "highest price", "lowest price", "newest"];
 
   const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
+    if (newPage > 0 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
   };
+
+  const startCount = (currentPage - 1) * productsPerPage + 1;
+  const endCount = Math.min(startCount + data.length - 1, totalItems);
+
+  const filteredProducts = data.filter((product) =>
+    product.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="bg-gray-custom min-h-screen">
@@ -82,7 +91,8 @@ export default function Products() {
 
         <div className="flex justify-between items-center mb-8">
           <p>
-            Showing <b className="font-bold">{data.length}</b> results of{" "}
+            Showing 
+            <b className="font-bold"> {endCount}</b> of{" "}
             <b className="font-bold">{totalItems}</b> Items
           </p>
           <div className="text-left relative">
@@ -116,7 +126,7 @@ export default function Products() {
 
         <h2 className="text-2xl font-bold pb-5">Featured Products</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {data.map((product) => {
+          {filteredProducts.map((product) => {
             const cartItem = cart.find((item) => item.id === product.id);
             return (
               <div
@@ -127,17 +137,17 @@ export default function Products() {
                   <img
                     src={`https://api.timbu.cloud/images/${product.photos[0]?.url}`}
                     alt={product.name}
-                    className="w-40 h-40 lg:w-80 lg:h-96"
+                    className="w-full h-auto"
                   />
                 </div>
-                <div className="w-full lg:w-64">
+                <div className="w-full">
                   <h3 className="text-base font-bold mt-4 mb-1">
                     {product.name}
                   </h3>
                   <p className="text-gray-600 text-xs">{product.description}</p>
                   <div className="flex items-center justify-between mt-2">
                     <p className="text-sm font-bold">
-                      {product?.current_price[0]?.NGN || "N/A"}
+                      ₦{product?.current_price[0]?.NGN || '₦150'}
                     </p>
                     <div className="flex items-center">
                       {cartItem ? (
@@ -179,11 +189,10 @@ export default function Products() {
             <button
               key={i}
               onClick={() => handlePageChange(i + 1)}
-              className={`mx-1 px-3 py-1  ${
-                currentPage === i + 1
-                  ? "bg-gray-300"
-                  : "bg-white hover:bg-gray-100"
-              }`}
+              className={`mx-1 px-3 py-1  ${currentPage === i + 1
+                ? "bg-gray-300"
+                : "bg-white hover:bg-gray-100"
+                }`}
             >
               {i + 1}
             </button>

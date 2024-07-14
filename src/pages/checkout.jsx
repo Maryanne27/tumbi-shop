@@ -52,8 +52,8 @@ export default function Checkout() {
   const subtotal = productDetails.reduce(
     (total, product) =>
       total +
-      (parseFloat(product?.current_price[0].NGN?.replace("$", "")) || 0) *
-        (product.quantity || 1),
+      (parseFloat(product?.current_price) || 0) *
+      (product.quantity || 1),
     0
   );
   const discount = subtotal * 0.1;
@@ -276,7 +276,7 @@ export default function Checkout() {
                   </div>
                 </div>
                 <div className="ml-auto">
-                  <p className="text-lg">{product.current_price[0].NGN || "N/A"}</p>
+                  <p className="text-lg">₦{product.current_price }</p>
                 </div>
               </div>
             ))}

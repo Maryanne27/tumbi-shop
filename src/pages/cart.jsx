@@ -94,7 +94,7 @@ export default function Cart() {
                     </h3>
                     <div className="text-right">
                       <p className="font-normal text-sm lg:font-bold">
-                        ${product.current_price[0]?.NGN}
+                      ₦{product.current_price[0]?.NGN}
                       </p>
                     </div>
                   </div>
@@ -132,21 +132,21 @@ export default function Cart() {
             <div className="p-4 border border-gray1">
               <div className="flex justify-between mb-4">
                 <p>Subtotal</p>
-                <p>${subtotal.toFixed(2)}</p>
+                <p>₦{subtotal.toFixed(2)}</p>
               </div>
               <div className="flex justify-between mb-4">
                 <p>Discount</p>
-                <p>${discount.toFixed(2)}</p>
+                <p>₦{discount.toFixed(2)}</p>
               </div>
               <hr />
               <div className="flex justify-between mb-4 mt-4">
                 <p className="font-bold">Total</p>
-                <p className="font-bold">${total.toFixed(2)}</p>
+                <p className="font-bold">₦{total.toFixed(2)}</p>
               </div>
               <Link to="/checkout">
                 <div className="text-center">
                   <button className="bg-black text-white w-full py-2">
-                    Pay ${total.toFixed(2)}
+                    Pay ₦{total.toFixed(2)}
                   </button>
                 </div>
               </Link>
