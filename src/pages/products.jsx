@@ -125,7 +125,7 @@ export default function Products() {
         </div>
 
         <h2 className="text-2xl font-bold pb-5">Featured Products</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProducts.map((product) => {
             const cartItem = cart.find((item) => item.id === product.id);
             return (
@@ -137,10 +137,10 @@ export default function Products() {
                   <img
                     src={`https://api.timbu.cloud/images/${product.photos[0]?.url}`}
                     alt={product.name}
-                    className="w-full h-auto"
+                    className="w-40 h-52 md:w-72 md:h-80 "
                   />
                 </div>
-                <div className="w-full">
+                <div className="w-40 md:w-72 ">
                   <h3 className="text-base font-bold mt-4 mb-1">
                     {product.name}
                   </h3>
@@ -151,13 +151,13 @@ export default function Products() {
                     </p>
                     <div className="flex items-center">
                       {cartItem ? (
-                        <div className="flex items-center bg-white">
+                        <div className="flex items-center bg-white px-2">
                           <button onClick={() => decrementQuantity(product.id)}>
-                            <RiSubtractLine className="text-2xl" />
+                            <RiSubtractLine className="text-xl text-bordergray" />
                           </button>
                           <span className="px-2">{cartItem.quantity}</span>
                           <button onClick={() => incrementQuantity(product.id)}>
-                            <RiAddLine className="text-xl" />
+                            <RiAddLine className="text-xl text-checkoutgray" />
                           </button>
                         </div>
                       ) : (

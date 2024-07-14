@@ -6,6 +6,7 @@ import {
 } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { context } from "../context/context";
+import Modal from "../modal/deleteModal";
 
 export default function Cart() {
   const {
@@ -17,8 +18,9 @@ export default function Cart() {
   } = useContext(context);
 
   const [removalMessage, setRemovalMessage] = useState("");
-
-  // Calculate subtotal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentProduct, setCurrentProduct] = useState(null);
+// Calculate subtotal
   const subtotal = cart.reduce(
     (total, product) =>
       total +
@@ -30,9 +32,17 @@ export default function Cart() {
   const total = subtotal - discount;
 
   const handleRemoveFromCart = (productId, productName) => {
-    removeFromCart(productId);
-    setRemovalMessage(` ${productName} has been removed from cart.`);
-    setTimeout(() => setRemovalMessage(""), 3000);
+    setCurrentProduct({ id: productId, name: productName });
+    setIsModalOpen(true);
+  };
+
+  const confirmRemoveFromCart = () => {
+    if (currentProduct) {
+      removeFromCart(currentProduct.id);
+      setRemovalMessage(` ${currentProduct.name} has been removed from cart.`);
+      setTimeout(() => setRemovalMessage(""), 3000);
+    }
+    setIsModalOpen(false);
   };
 
   return (
@@ -56,6 +66,13 @@ export default function Cart() {
           <span>{removalMessage}</span>
         </div>
       )}
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onDelete={confirmRemoveFromCart}
+        productName={currentProduct?.name}
+      />
 
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-xl font-bold mb-8">Cart</h2>
@@ -85,7 +102,7 @@ export default function Cart() {
                 <img
                   src={`https://api.timbu.cloud/images/${product?.photos[0]?.url}`}
                   alt={product.name}
-                  className="w-40 h-40 lg:w-52 lg:h-52"
+                  className="w-40 h-40 lg:w-52 lg:h-52 mt-4"
                 />
                 <div className="flex-1 ">
                   <div className="flex justify-between items-center mb-4">
@@ -94,7 +111,7 @@ export default function Cart() {
                     </h3>
                     <div className="text-right">
                       <p className="font-normal text-sm lg:font-bold">
-                      ₦{product.current_price[0]?.NGN}
+                        ₦{product.current_price[0]?.NGN}
                       </p>
                     </div>
                   </div>

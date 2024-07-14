@@ -410,18 +410,20 @@ export default function Checkout() {
       </div>
 
       {isModalOpen && (
-        <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded shadow-lg max-w-md w-full">
-            <RiCheckboxCircleLine className="text-green-500 text-4xl mb-4 mx-auto" />
-            <h2 className="text-2xl font-bold text-center mb-4">
-              Payment Successful!
-            </h2>
-            <p className="text-center text-gray-600 mb-4">
+       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 text-center">
+       <div className="bg-white px-16 py-10 shadow-lg text-center">
+         <div className="flex items-center justify-center">
+         <RiCheckboxCircleLine size={60} className="mr-2 text-green-500" />
+      </div>
+      <h3 className="text-lg font-bold mb-4 flex items-center justify-center">
+        Payment Successful
+      </h3>
+            <p className="text-center text-checkoutgray pb-7">
               Your order is now on the way.
             </p>
             <NavLink
               to="/"
-              className="block bg-buttonblack text-white text-center py-2 px-4 rounded"
+              className="block bg-buttonblack text-white text-center py-2 px-4 "
             >
               Back to store
             </NavLink>

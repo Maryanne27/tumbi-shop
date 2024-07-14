@@ -7,9 +7,7 @@ export default function Layout() {
   return (
     <div className="bg-gray-custom min-h-screen">
       <Header />
-      <div className="container mx-auto p-4">
         <Outlet />
-      </div>
       <Footer />
     </div>
   );
