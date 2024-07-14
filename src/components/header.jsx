@@ -34,8 +34,10 @@ export default function Header() {
       >
         <div className="flex items-center space-x-8">
           <div className="flex flex-col text-center">
-            <h1 className="text-md font-bold">TIMBU</h1>
-            <span className="text-md">cloud shop</span>
+            <NavLink to="/">
+              <h1 className="text-md font-bold">TIMBU</h1>
+              <span className="text-md">cloud shop</span>
+            </NavLink>
           </div>
           <div className="hidden md:flex space-x-6 text-sm">
             <ul className="flex space-x-6">
@@ -86,7 +88,12 @@ export default function Header() {
       {menuOpen && (
         <div className="absolute top-0 left-0 w-full h-fit bg-white text-black flex flex-col items-start p-4 z-50 transition-transform duration-300 b-6">
           <div className="w-full flex justify-between items-center border-b pb-2 mb-4">
-            <h1 className="text-lg font-bold">TIMBU</h1>
+          <div className="flex flex-col text-center">
+            <NavLink to="/">
+              <h1 className="text-md font-bold">TIMBU</h1>
+              <span className="text-md">cloud shop</span>
+            </NavLink>
+          </div>
             <button onClick={toggleMenu} className="p-2">
               <RiCloseLine size={24} />
             </button>
@@ -98,7 +105,12 @@ export default function Header() {
             </li>
             <li className="flex items-center space-x-2 cursor-pointer">
               <RiSearchLine />
-              <span onClick={closeMenu}>Search</span>
+              <input
+                type="text"
+                placeholder="search"
+                className="bg-gray-200 border border-gray-300 outline-none px-2 py-1 text-black "
+                onChange={handleSearch} 
+              />
             </li>
           </ul>
         </div>

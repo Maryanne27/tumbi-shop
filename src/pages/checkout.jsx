@@ -9,10 +9,19 @@ import { useForm } from "react-hook-form";
 import Card from "../assets/card.png";
 import { context } from "../context/context";
 
+const formatPrice = (price) => {
+  return new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+  }).format(price);
+};
+
 export default function Checkout() {
   const { cart, clearCart } = useContext(context);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [productDetails, setProductDetails] = useState([]);
+  const [paymentMethod, setPaymentMethod] = useState("card");
+
   const {
     register,
     handleSubmit,
@@ -44,7 +53,7 @@ export default function Checkout() {
       }
     };
 
-    if (cart.length > 0) {
+    if (cart?.length > 0) {
       fetchDetails();
     }
   }, [cart]);
@@ -52,8 +61,7 @@ export default function Checkout() {
   const subtotal = productDetails.reduce(
     (total, product) =>
       total +
-      (parseFloat(product?.current_price) || 0) *
-      (product.quantity || 1),
+      (parseFloat(product?.current_price) || 0) * (product.quantity || 1),
     0
   );
   const discount = subtotal * 0.1;
@@ -106,6 +114,7 @@ export default function Checkout() {
                     id="cardPayment"
                     className="mr-2 text-blue-500"
                     defaultChecked
+                    onChange={() => setPaymentMethod("card")}
                   />
                   <label
                     htmlFor="cardPayment"
@@ -121,6 +130,7 @@ export default function Checkout() {
                       name="paymentMethod"
                       id="payOnDelivery"
                       className="mr-2"
+                      onChange={() => setPaymentMethod("payOnDelivery")}
                     />
                     <label
                       htmlFor="payOnDelivery"
@@ -132,159 +142,181 @@ export default function Checkout() {
                 </div>
               </div>
 
-              <h4 className="text-base mb-3">Enter Card Information</h4>
-              <div className="mb-4 relative">
-                <label
-                  className="block text-gray-700 mb-2 text-sm"
-                  htmlFor="cardName"
-                >
-                  Card Holder's Name
-                </label>
-                <input
-                  type="text"
-                  id="cardName"
-                  placeholder="James Doe"
-                  className="w-full p-2 border pr-10"
-                  {...register("cardName", { required: true })}
-                />
-                {errors.cardName && (
-                  <p className="text-red-500">Card holder's name is required</p>
-                )}
-              </div>
-              <div className="mb-4 relative">
-                <label
-                  className="block text-gray-700 mb-2 text-sm"
-                  htmlFor="cardNumber"
-                >
-                  Card Number
-                </label>
-                <input
-                  type="text"
-                  id="cardNumber"
-                  placeholder="5061 2345 6789 1234"
-                  className="w-full p-2 border pr-10 text-black"
-                  {...register("cardNumber", {
-                    required: true,
-                    pattern: /^[0-9]{16}$/,
-                  })}
-                />
-                <img
-                  src={Card}
-                  alt="card"
-                  className="absolute right-2 top-10 text-gray-400"
-                />
-                {errors.cardNumber && (
-                  <p className="text-red-500">Card number must be 16 digits</p>
-                )}
-              </div>
-              <div className="flex space-x-4">
-                <div className="mb-4 w-1/2 relative">
-                  <label
-                    className="block text-gray-700 mb-2 text-sm"
-                    htmlFor="expiryDate"
-                  >
-                    Expiry Date
-                  </label>
-                  <input
-                    type="text"
-                    id="expiryDate"
-                    placeholder="12/24"
-                    className="w-full p-2 border pr-10 text-black"
-                    {...register("expiryDate", {
-                      required: true,
-                      pattern: /^(0[1-9]|1[0-2])\/?([0-9]{2})$/,
-                    })}
-                  />
-                  <RiCalendarLine className="absolute right-2 top-10 text-gray-400" />
-                  {errors.expiryDate && (
-                    <p className="text-red-500">
-                      Expiry date must be MM/YY format
-                    </p>
-                  )}
-                </div>
-                <div className="mb-4 w-1/2 relative">
-                  <label
-                    className="block text-gray-700 mb-2 text-sm"
-                    htmlFor="cvv"
-                  >
-                    CVV
-                  </label>
-                  <input
-                    type="text"
-                    id="cvv"
-                    placeholder="123"
-                    className="w-full p-2 border pr-10 text-black"
-                    {...register("cvv", {
-                      required: true,
-                      pattern: /^[0-9]{3}$/,
-                    })}
-                  />
-                  {errors.cvv && (
-                    <p className="text-red-500">CVV must be 3 digits</p>
-                  )}
-                </div>
-              </div>
+              {paymentMethod === "card" && (
+                <>
+                  <h4 className="text-base mb-3">Enter Card Information</h4>
+                  <div className="mb-4 relative">
+                    <label
+                      className="block text-gray-700 mb-2 text-sm"
+                      htmlFor="cardName"
+                    >
+                      Card Holder's Name
+                    </label>
+                    <input
+                      type="text"
+                      id="cardName"
+                      placeholder="James Doe"
+                      className="w-full p-2 border pr-10"
+                      {...register("cardName", { required: true })}
+                    />
+                    {errors.cardName && (
+                      <p className="text-red-500">
+                        Card holder's name is required
+                      </p>
+                    )}
+                  </div>
+                  <div className="mb-4 relative">
+                    <label
+                      className="block text-gray-700 mb-2 text-sm"
+                      htmlFor="cardNumber"
+                    >
+                      Card Number
+                    </label>
+                    <input
+                      type="text"
+                      id="cardNumber"
+                      placeholder="5061 2345 6789 1234"
+                      className="w-full p-2 border pr-10 text-black"
+                      {...register("cardNumber", {
+                        required: true,
+                        pattern: /^[0-9]{16}$/,
+                      })}
+                    />
+                    <img
+                      src={Card}
+                      alt="card"
+                      className="absolute right-2 top-10 text-gray-400"
+                    />
+                    {errors.cardNumber && (
+                      <p className="text-red-500">
+                        Card number must be 16 digits
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex space-x-4">
+                    <div className="mb-4 w-1/2 relative">
+                      <label
+                        className="block text-gray-700 mb-2 text-sm"
+                        htmlFor="expiryDate"
+                      >
+                        Expiry Date
+                      </label>
+                      <input
+                        type="text"
+                        id="expiryDate"
+                        placeholder="12/24"
+                        className="w-full p-2 border pr-10 text-black"
+                        {...register("expiryDate", {
+                          required: true,
+                          pattern: /^(0[1-9]|1[0-2])\/?([0-9]{2})$/,
+                        })}
+                      />
+                      <RiCalendarLine className="absolute right-2 top-10 text-gray-400" />
+                      {errors.expiryDate && (
+                        <p className="text-red-500">
+                          Expiry date must be MM/YY format
+                        </p>
+                      )}
+                    </div>
+                    <div className="mb-4 w-1/2 relative">
+                      <label
+                        className="block text-gray-700 mb-2 text-sm"
+                        htmlFor="cvv"
+                      >
+                        CVV
+                      </label>
+                      <input
+                        type="text"
+                        id="cvv"
+                        placeholder="123"
+                        className="w-full p-2 border pr-10 text-black"
+                        {...register("cvv", {
+                          required: true,
+                          pattern: /^[0-9]{3}$/,
+                        })}
+                      />
+                      {errors.cvv && (
+                        <p className="text-red-500">CVV must be 3 digits</p>
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
 
               <div className="flex justify-between items-center mt-6">
                 <h3 className="text-base">Subtotal</h3>
-                <h3 className="text-base">${subtotal.toFixed(2)}</h3>
+                <h3 className="text-base">{formatPrice(subtotal)}</h3>
               </div>
               <div className="flex justify-between items-center mt-4">
                 <h3 className="text-base">Discount</h3>
-                <h3 className="text-base">-${discount.toFixed(2)}</h3>
+                <h3 className="text-base">-{formatPrice(discount)}</h3>
               </div>
               <hr className="my-4" />
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-xl font-bold">Total</h3>
-                <h3 className="text-xl font-bold">${total.toFixed(2)}</h3>
+                <h3 className="text-xl font-bold">{formatPrice(total)}</h3>
               </div>
+
               <div className="text-center mt-6">
                 <button
                   type="submit"
                   className="bg-buttonblack text-white px-4 py-2 text-base w-full"
                 >
-                  Pay
+                  {paymentMethod === "card" ? "Pay" : "Confirm Order"}
                 </button>
               </div>
             </form>
           </div>
         </div>
-
+       
         {/* Order Summary Section */}
         <div className="lg:w-2/3 order-1 lg:order-2">
-          <div className="border border-bordergray p-4 mb-8">
+        <div className="border border-bordergray p-4 mb-8">
             <div className="flex gap-2 items-center">
-              <h3 className="text-xl font-bold">Order Summary</h3>
+            <h3 className="text-xl font-bold">Order Summary</h3>
               <p className="bg-black text-white px-2 rounded-full text-sm flex justify-center items-center text-center">
-                {cart.length}
+                {cart?.length}
               </p>
             </div>
-            {productDetails.map((product) => (
-              <div
-                key={product.unique_id}
-                className="flex gap-6 mb-4 items-center mt-6"
-              >
-                <div className="flex gap-5 items-center">
+          
+              {productDetails.map((product, index) => (
+                <div
+                  key={index}
+                  className="flex gap-6 mb-4 items-center mt-6"
+                >
+                  <div className="flex gap-5 items-center">
                   <img
                     src={`https://api.timbu.cloud/images/${product?.photos[0]?.url}`}
                     alt={product.name}
                     className="w-20 h-20"
                   />
-                  <div>
+                   <div>
                     <p className="font-bold">{product?.name}</p>
                     <p className="text-gray-500">XXL</p>
+                    <p className="text-checkoutgraypb-2">QTY: {cart[index].quantity}</p>
                   </div>
                 </div>
                 <div className="ml-auto">
-                  <p className="text-lg">₦{product.current_price }</p>
+                  <p className="text-lg">
+                      {formatPrice(product.current_price)} 
+                    </p>
+                  </div>
+                  </div>
+                 
+                  ))}
+                  <hr className="my-4" />
                 </div>
-              </div>
-            ))}
-            <hr className="my-4" />
-          </div>
-
-          {/* Delivery Information Section */}
-          <div className="border border-bordergray p-4">
+                  
+                  
+                    
+                    {/* <p className="text-gray-600">
+                      Total:{" "}
+                      {formatPrice(
+                        parseFloat(product.current_price) *
+                          (cart[index].quantity || 1)
+                      )}
+                    </p> */}
+                    <div className="border border-bordergray p-4">
             <h3 className="text-xl font-bold mb-4">Delivery Information</h3>
 
             <div className="flex space-x-4">
@@ -303,8 +335,8 @@ export default function Checkout() {
                 {errors.firstname?.type === "required" && (
                   <p className="text-red-500">first name is required</p>
                 )}
-              </div>
-              <div className="mb-4 w-1/2">
+                </div>
+                  <div className="mb-4 w-1/2">
                 <label className="block text-gray-700 mb-2" htmlFor="lastname">
                   Last Name
                 </label>
@@ -319,93 +351,96 @@ export default function Checkout() {
                 {errors.lastname?.type === "required" && (
                   <p className="text-red-500">Last name is required</p>
                 )}
-              </div>
+                </div>
+             
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 mb-2" htmlFor="address">
-                Address
+            <label className="block text-gray-700 mb-2" htmlFor="address">
+              Address
+            </label>
+            <input
+              type="text"
+              id="address"
+              className="w-full p-2 border"
+              {...register("address", {
+                required: true,
+              })}
+            />
+            {errors.address?.type === "required" && (
+              <p className="text-red-500">Address is required</p>
+            )}
+          </div>
+          <div className="flex space-x-4">
+            <div className="mb-4 w-1/2">
+              <label className="block text-gray-700 mb-2" htmlFor="city">
+                City/Town
               </label>
               <input
                 type="text"
-                id="address"
+                id="city"
                 className="w-full p-2 border"
-                {...register("address", {
+                {...register("city", {
                   required: true,
                 })}
               />
-              {errors.address?.type === "required" && (
-                <p className="text-red-500">Address is required</p>
+              {errors.city?.type === "required" && (
+                <p className="text-red-500">This field is required</p>
               )}
             </div>
-            <div className="flex space-x-4">
-              <div className="mb-4 w-1/2">
-                <label className="block text-gray-700 mb-2" htmlFor="city">
-                  City/Town
-                </label>
-                <input
-                  type="text"
-                  id="city"
-                  className="w-full p-2 border"
-                  {...register("city", {
-                    required: true,
-                  })}
-                />
-                {errors.city?.type === "required" && (
-                  <p className="text-red-500">This field is required</p>
-                )}
-              </div>
-              <div className="mb-4 w-1/2">
-                <label className="block text-gray-700 mb-2" htmlFor="zip">
-                  Zip Code
-                </label>
-                <input
-                  type="text"
-                  id="zip"
-                  className="w-full p-2 border"
-                  {...register("zip", {
-                    required: true,
-                  })}
-                />
-                {errors.zip?.type === "required" && (
-                  <p className="text-red-500">This field is required</p>
-                )}
-              </div>
-            </div>
-            <div className="flex space-x-4">
-              <div className="mb-4 w-1/2">
-                <label className="block text-gray-700 mb-2" htmlFor="phone">
-                  Mobile No
-                </label>
-                <input
-                  type="text"
-                  id="phone"
-                  className="w-full p-2 border"
-                  {...register("phone", {
-                    required: true,
-                  })}
-                />
-                {errors.phone?.type === "required" && (
-                  <p className="text-red-500">phone number is required</p>
-                )}
-              </div>
-              <div className="mb-4 w-1/2 pb-3">
-                <label className="block text-gray-700 mb-2" htmlFor="email">
-                  Email Address
-                </label>
-                <input
-                  type="text"
-                  id="email"
-                  className="w-full p-2 border"
-                  {...register("email", {
-                    required: true,
-                  })}
-                />
-                {errors.email?.type === "required" && (
-                  <p className="text-red-500">Email address is required</p>
-                )}
-              </div>
+            <div className="mb-4 w-1/2">
+              <label className="block text-gray-700 mb-2" htmlFor="zip">
+                Zip Code
+              </label>
+              <input
+                type="text"
+                id="zip"
+                className="w-full p-2 border"
+                {...register("zip", {
+                  required: true,
+                })}
+              />
+              {errors.zip?.type === "required" && (
+                <p className="text-red-500">This field is required</p>
+              )}
             </div>
           </div>
+          <div className="flex space-x-4">
+            <div className="mb-4 w-1/2">
+              <label className="block text-gray-700 mb-2" htmlFor="phone">
+                Mobile No
+              </label>
+              <input
+                type="text"
+                id="phone"
+                className="w-full p-2 border"
+                {...register("phone", {
+                  required: true,
+                })}
+              />
+              {errors.phone?.type === "required" && (
+                <p className="text-red-500">phone number is required</p>
+              )}
+            </div>
+            <div className="mb-4 w-1/2 pb-3">
+              <label className="block text-gray-700 mb-2" htmlFor="email">
+                Email Address
+              </label>
+              <input
+                type="text"
+                id="email"
+                className="w-full p-2 border"
+                {...register("email", {
+                  required: true,
+                })}
+              />
+              {errors.email?.type === "required" && (
+                <p className="text-red-500">Email address is required</p>
+              )}
+            </div>
+          </div>
+        </div>
+     
+          
         </div>
       </div>
 
@@ -426,9 +461,10 @@ export default function Checkout() {
               className="block bg-buttonblack text-white text-center py-2 px-4 "
             >
               Back to store
-            </NavLink>
+              </NavLink>
+            </div>
           </div>
-        </div>
+       
       )}
     </div>
   );
