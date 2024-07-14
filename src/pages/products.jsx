@@ -25,7 +25,7 @@ export default function Products() {
 
   const fetchProducts = async ({ queryKey }) => {
     const [, page] = queryKey;
-    const response = await axios.get("api/products", {
+    const response = await axios.get("https://api.timbu.cloud/products", {
       params: {
         organization_id: "7b59152ffec240b3816027d241f05c93",
         Appid: "OAX7IL8QDFZH0VY",

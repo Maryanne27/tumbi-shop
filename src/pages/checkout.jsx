@@ -25,7 +25,7 @@ export default function Checkout() {
     const Apikey = "72eda6187cbb4106b975e9d2d616073420240712142534062960";
 
     const response = await fetch(
-      `api/products/${productId}?organization_id=${id}&Appid=${Appid}&Apikey=${Apikey}`
+      `https://api.timbu.cloud/products/${productId}?organization_id=${id}&Appid=${Appid}&Apikey=${Apikey}`
     );
 
     if (!response.ok) throw new Error("Network response was not ok");
