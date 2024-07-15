@@ -34,7 +34,7 @@ export default function Checkout() {
     const Apikey = process.env.REACT_APP_APIKEY;
 
     const response = await fetch(
-      `${process.env.REACT_APP_API_URL}/products/${productId}?organization_id=${id}&Appid=${Appid}&Apikey=${Apikey}`
+      `${process.env.REACT_APP_API_URL}/${productId}?organization_id=${id}&Appid=${Appid}&Apikey=${Apikey}`
     );
 
     if (!response.ok) throw new Error("Network response was not ok");

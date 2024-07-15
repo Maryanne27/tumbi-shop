@@ -31,7 +31,7 @@ export default function Products() {
 
   const fetchProducts = async ({ queryKey }) => {
     const [, page] = queryKey;
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/products`, {
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/`, {
       params: {
         organization_id: process.env.REACT_APP_ORG_ID,
         Appid: process.env.REACT_APP_APPID,
