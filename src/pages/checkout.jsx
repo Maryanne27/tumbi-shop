@@ -29,12 +29,12 @@ export default function Checkout() {
   } = useForm();
 
   const fetchProductDetails = async (productId) => {
-    const id = process.env.REACT_APP_ORG_ID;
-    const Appid = process.env.REACT_APP_APPID;
-    const Apikey = process.env.REACT_APP_APIKEY;
+    const id = "7b59152ffec240b3816027d241f05c93";
+    const Appid = "OAX7IL8QDFZH0VY";
+    const Apikey = "72eda6187cbb4106b975e9d2d616073420240712142534062960";
 
     const response = await fetch(
-      `${process.env.REACT_APP_API_URL}/${productId}?organization_id=${id}&Appid=${Appid}&Apikey=${Apikey}`
+      `https://api.timbu.cloud/products/${productId}?organization_id=${id}&Appid=${Appid}&Apikey=${Apikey}`
     );
 
     if (!response.ok) throw new Error("Network response was not ok");
@@ -283,9 +283,7 @@ export default function Checkout() {
               <div key={index} className="flex gap-6 mb-4 items-center mt-6">
                 <div className="flex gap-5 items-center">
                   <img
-                    src={`https://api.timbu.cloud/images/${
-                      product?.photos[0]?.url || ""
-                    }`}
+                    src={`https://api.timbu.cloud/images/${product?.photos[0]?.url}`}
                     alt={product.name}
                     className="w-20 h-20"
                   />

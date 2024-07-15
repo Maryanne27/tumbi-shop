@@ -115,10 +115,8 @@ export default function Cart() {
                 className="border border-b-checkoutgray pb-4 flex items-start"
               >
                 <img
-                    src={`https://api.timbu.cloud/images/${
-                      product.photos[0]?.url || ""
-                    }`}
-                    alt={product.name}
+                  src={`https://api.timbu.cloud/images/${product?.photos[0]?.url}`}
+                  alt={product.name}
                   className="w-40 h-40 lg:w-52 lg:h-52 mt-4"
                 />
                 <div className="flex-1 pt-7">
