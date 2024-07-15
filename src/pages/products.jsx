@@ -31,11 +31,11 @@ export default function Products() {
 
   const fetchProducts = async ({ queryKey }) => {
     const [, page] = queryKey;
-    const response = await axios.get("https://api.timbu.cloud/products", {
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/products`, {
       params: {
-        organization_id: "7b59152ffec240b3816027d241f05c93",
-        Appid: "OAX7IL8QDFZH0VY",
-        Apikey: "72eda6187cbb4106b975e9d2d616073420240712142534062960",
+        organization_id: process.env.REACT_APP_ORG_ID,
+        Appid: process.env.REACT_APP_APPID,
+        Apikey: process.env.REACT_APP_APIKEY,
         page: page,
         size: productsPerPage,
       },
@@ -159,8 +159,8 @@ export default function Products() {
                   className="w-full flex justify-center transform transition duration-300 hover:scale-105 active:scale-95"
                   onClick={() => navigate(`/products/${product.id}`)}
                 >
-                  <img
-                    src={`https://api.timbu.cloud/images/${
+                   <img
+                    src={`${process.env.REACT_APP_API_URL}/images/${
                       product.photos[0]?.url || ""
                     }`}
                     alt={product.name}

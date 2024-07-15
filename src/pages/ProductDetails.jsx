@@ -3,12 +3,12 @@ import { useParams } from "react-router-dom";
 import { context } from "../context/context";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import {  RiErrorWarningFill } from "react-icons/ri";
+import { RiErrorWarningFill } from "react-icons/ri";
 import similarProducts from "./similarProducts";
 
 export default function ProductDetails() {
   const { id } = useParams();
-  const { addToCart} = useContext(context);
+  const { addToCart } = useContext(context);
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat("en-NG", {
@@ -18,11 +18,11 @@ export default function ProductDetails() {
   };
 
   const fetchProductDetails = async () => {
-    const response = await axios.get(`https://timbu-get-single-product.reavdev.workers.dev/${id}`, {
+    const response = await axios.get(`${process.env.REACT_APP_BASE}/${id}`, {
       params: {
-        organization_id: "7b59152ffec240b3816027d241f05c93",
-        Appid: "OAX7IL8QDFZH0VY",
-        Apikey: "72eda6187cbb4106b975e9d2d616073420240712142534062960",
+        organization_id: process.env.REACT_APP_ORG_ID,
+        Appid: process.env.REACT_APP_APPID,
+        Apikey: process.env.REACT_APP_APIKEY,
       },
     });
     return response.data;
@@ -57,40 +57,40 @@ export default function ProductDetails() {
   }
 
   const product = data;
-//   const cartItem = cart.find((item) => item.id === product.id);
+  //   const cartItem = cart.find((item) => item.id === product.id);
 
-  
   return (
     <div className="container mx-auto px-4 py-7">
       <div className="grid grid-cols-1 md:grid-cols-2 ">
         <div>
           <img
-            src={`https://api.timbu.cloud/images/${product.photos[0]?.url}`}
+            src={`${process.env.REACT_APP_API_URL}/images/${
+              product.photos[0]?.url || ""
+            }`}
             alt={product.name}
             className="w-96 h-96"
           />
         </div>
         <div className="flex flex-col justify-center items-start pt-5">
           <h1 className="text-2xl font-bold">{product.name}</h1>
-          <p className="text-lg font-bold mt-4 pb-7">{formatPrice(product.current_price)}</p>
-<h4 className="font-bold text-lg">Description</h4>
+          <p className="text-lg font-bold mt-4 pb-7">
+            {formatPrice(product.current_price)}
+          </p>
+          <h4 className="font-bold text-lg">Description</h4>
           <p className="mt-4">{product.description}</p>
           <div className="flex items-center mt-8">
-            
-              <button
-                onClick={() => addToCart(product)}
-                className="py-2 px-3 text-xs lg:text-sm cursor-pointer bg-black hover:text-black transition-all duration-300 border border-black hover:bg-transparent text-white"
-              >
-                Add to cart
-              </button>
-           
+            <button
+              onClick={() => addToCart(product)}
+              className="py-2 px-3 text-xs lg:text-sm cursor-pointer bg-black hover:text-black transition-all duration-300 border border-black hover:bg-transparent text-white"
+            >
+              Add to cart
+            </button>
           </div>
         </div>
       </div>
       <div className="mt-8">
         <h2 className="text-2xl font-bold pb-4">Similar Products</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4">
-          
           {similarProducts.map((similarProduct) => (
             <div key={similarProduct.id} className="flex flex-col items-start">
               <img
@@ -98,13 +98,11 @@ export default function ProductDetails() {
                 alt={similarProduct.name}
                 className="w-40 h-52"
               />
-              <h3 className="text-base font-bold mt-2">{similarProduct.name}</h3>
-              
-              <p className="text-sm font-bold">
-                ₦{similarProduct.price}
-              </p>
-             
-               
+              <h3 className="text-base font-bold mt-2">
+                {similarProduct.name}
+              </h3>
+
+              <p className="text-sm font-bold">₦{similarProduct.price}</p>
             </div>
           ))}
         </div>

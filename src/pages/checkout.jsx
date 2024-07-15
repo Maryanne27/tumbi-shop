@@ -29,12 +29,12 @@ export default function Checkout() {
   } = useForm();
 
   const fetchProductDetails = async (productId) => {
-    const id = "7b59152ffec240b3816027d241f05c93";
-    const Appid = "OAX7IL8QDFZH0VY";
-    const Apikey = "72eda6187cbb4106b975e9d2d616073420240712142534062960";
+    const id = process.env.REACT_APP_ORG_ID;
+    const Appid = process.env.REACT_APP_APPID;
+    const Apikey = process.env.REACT_APP_APIKEY;
 
     const response = await fetch(
-      `https://api.timbu.cloud/products/${productId}?organization_id=${id}&Appid=${Appid}&Apikey=${Apikey}`
+      `${process.env.REACT_APP_API_URL}/products/${productId}?organization_id=${id}&Appid=${Appid}&Apikey=${Apikey}`
     );
 
     if (!response.ok) throw new Error("Network response was not ok");
@@ -268,55 +268,53 @@ export default function Checkout() {
             </form>
           </div>
         </div>
-       
+
         {/* Order Summary Section */}
         <div className="lg:w-2/3 order-1 lg:order-2">
-        <div className="border border-bordergray p-4 mb-8">
+          <div className="border border-bordergray p-4 mb-8">
             <div className="flex gap-2 items-center">
-            <h3 className="text-xl font-bold">Order Summary</h3>
+              <h3 className="text-xl font-bold">Order Summary</h3>
               <p className="bg-black text-white px-2 rounded-full text-sm flex justify-center items-center text-center">
                 {cart?.length}
               </p>
             </div>
-          
-              {productDetails.map((product, index) => (
-                <div
-                  key={index}
-                  className="flex gap-6 mb-4 items-center mt-6"
-                >
-                  <div className="flex gap-5 items-center">
+
+            {productDetails.map((product, index) => (
+              <div key={index} className="flex gap-6 mb-4 items-center mt-6">
+                <div className="flex gap-5 items-center">
                   <img
-                    src={`https://api.timbu.cloud/images/${product?.photos[0]?.url}`}
+                    src={`${process.env.REACT_APP_API_URL}/images/${
+                      product.photos[0]?.url || ""
+                    }`}
                     alt={product.name}
                     className="w-20 h-20"
                   />
-                   <div>
+                  <div>
                     <p className="font-bold">{product?.name}</p>
                     <p className="text-gray-500">XXL</p>
-                    <p className="text-checkoutgraypb-2">QTY: {cart[index].quantity}</p>
+                    <p className="text-checkoutgraypb-2">
+                      QTY: {cart[index].quantity}
+                    </p>
                   </div>
                 </div>
                 <div className="ml-auto">
                   <p className="text-lg">
-                      {formatPrice(product.current_price)} 
-                    </p>
-                  </div>
-                  </div>
-                 
-                  ))}
-                  <hr className="my-4" />
+                    {formatPrice(product.current_price)}
+                  </p>
                 </div>
-                  
-                  
-                    
-                    {/* <p className="text-gray-600">
+              </div>
+            ))}
+            <hr className="my-4" />
+          </div>
+
+          {/* <p className="text-gray-600">
                       Total:{" "}
                       {formatPrice(
                         parseFloat(product.current_price) *
                           (cart[index].quantity || 1)
                       )}
                     </p> */}
-                    <div className="border border-bordergray p-4">
+          <div className="border border-bordergray p-4">
             <h3 className="text-xl font-bold mb-4">Delivery Information</h3>
 
             <div className="flex space-x-4">
@@ -335,8 +333,8 @@ export default function Checkout() {
                 {errors.firstname?.type === "required" && (
                   <p className="text-red-500">first name is required</p>
                 )}
-                </div>
-                  <div className="mb-4 w-1/2">
+              </div>
+              <div className="mb-4 w-1/2">
                 <label className="block text-gray-700 mb-2" htmlFor="lastname">
                   Last Name
                 </label>
@@ -351,108 +349,105 @@ export default function Checkout() {
                 {errors.lastname?.type === "required" && (
                   <p className="text-red-500">Last name is required</p>
                 )}
-                </div>
-             
+              </div>
             </div>
             <div className="mb-4">
-            <label className="block text-gray-700 mb-2" htmlFor="address">
-              Address
-            </label>
-            <input
-              type="text"
-              id="address"
-              className="w-full p-2 border"
-              {...register("address", {
-                required: true,
-              })}
-            />
-            {errors.address?.type === "required" && (
-              <p className="text-red-500">Address is required</p>
-            )}
+              <label className="block text-gray-700 mb-2" htmlFor="address">
+                Address
+              </label>
+              <input
+                type="text"
+                id="address"
+                className="w-full p-2 border"
+                {...register("address", {
+                  required: true,
+                })}
+              />
+              {errors.address?.type === "required" && (
+                <p className="text-red-500">Address is required</p>
+              )}
+            </div>
+            <div className="flex space-x-4">
+              <div className="mb-4 w-1/2">
+                <label className="block text-gray-700 mb-2" htmlFor="city">
+                  City/Town
+                </label>
+                <input
+                  type="text"
+                  id="city"
+                  className="w-full p-2 border"
+                  {...register("city", {
+                    required: true,
+                  })}
+                />
+                {errors.city?.type === "required" && (
+                  <p className="text-red-500">This field is required</p>
+                )}
+              </div>
+              <div className="mb-4 w-1/2">
+                <label className="block text-gray-700 mb-2" htmlFor="zip">
+                  Zip Code
+                </label>
+                <input
+                  type="text"
+                  id="zip"
+                  className="w-full p-2 border"
+                  {...register("zip", {
+                    required: true,
+                  })}
+                />
+                {errors.zip?.type === "required" && (
+                  <p className="text-red-500">This field is required</p>
+                )}
+              </div>
+            </div>
+            <div className="flex space-x-4">
+              <div className="mb-4 w-1/2">
+                <label className="block text-gray-700 mb-2" htmlFor="phone">
+                  Mobile No
+                </label>
+                <input
+                  type="text"
+                  id="phone"
+                  className="w-full p-2 border"
+                  {...register("phone", {
+                    required: true,
+                  })}
+                />
+                {errors.phone?.type === "required" && (
+                  <p className="text-red-500">phone number is required</p>
+                )}
+              </div>
+              <div className="mb-4 w-1/2 pb-3">
+                <label className="block text-gray-700 mb-2" htmlFor="email">
+                  Email Address
+                </label>
+                <input
+                  type="text"
+                  id="email"
+                  className="w-full p-2 border"
+                  {...register("email", {
+                    required: true,
+                  })}
+                />
+                {errors.email?.type === "required" && (
+                  <p className="text-red-500">Email address is required</p>
+                )}
+              </div>
+            </div>
           </div>
-          <div className="flex space-x-4">
-            <div className="mb-4 w-1/2">
-              <label className="block text-gray-700 mb-2" htmlFor="city">
-                City/Town
-              </label>
-              <input
-                type="text"
-                id="city"
-                className="w-full p-2 border"
-                {...register("city", {
-                  required: true,
-                })}
-              />
-              {errors.city?.type === "required" && (
-                <p className="text-red-500">This field is required</p>
-              )}
-            </div>
-            <div className="mb-4 w-1/2">
-              <label className="block text-gray-700 mb-2" htmlFor="zip">
-                Zip Code
-              </label>
-              <input
-                type="text"
-                id="zip"
-                className="w-full p-2 border"
-                {...register("zip", {
-                  required: true,
-                })}
-              />
-              {errors.zip?.type === "required" && (
-                <p className="text-red-500">This field is required</p>
-              )}
-            </div>
-          </div>
-          <div className="flex space-x-4">
-            <div className="mb-4 w-1/2">
-              <label className="block text-gray-700 mb-2" htmlFor="phone">
-                Mobile No
-              </label>
-              <input
-                type="text"
-                id="phone"
-                className="w-full p-2 border"
-                {...register("phone", {
-                  required: true,
-                })}
-              />
-              {errors.phone?.type === "required" && (
-                <p className="text-red-500">phone number is required</p>
-              )}
-            </div>
-            <div className="mb-4 w-1/2 pb-3">
-              <label className="block text-gray-700 mb-2" htmlFor="email">
-                Email Address
-              </label>
-              <input
-                type="text"
-                id="email"
-                className="w-full p-2 border"
-                {...register("email", {
-                  required: true,
-                })}
-              />
-              {errors.email?.type === "required" && (
-                <p className="text-red-500">Email address is required</p>
-              )}
-            </div>
-          </div>
-        </div>
-     
-          
         </div>
       </div>
 
       {isModalOpen && (
-       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 text-center">
-       <div className="bg-white px-16 py-10 shadow-lg text-center">
-         <div className="flex items-center justify-center">
-         <RiCheckboxCircleLine size={60} className="mr-2 text-green-500" />
-      </div>
-      <h3 className="text-lg font-bold mb-4 flex items-center justify-center">
-        Payment Successful
-      </h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 text-center">
+          <div className="bg-white px-16 py-10 shadow-lg text-center">
+            <div className="flex items-center justify-center">
+              <RiCheckboxCircleLine size={60} className="mr-2 text-green-500" />
+            </div>
+            <h3 className="text-lg font-bold mb-4 flex items-center justify-center">
+              Payment Successful
+            </h3>
             <p className="text-center text-checkoutgray pb-7">
               Your order is now on the way.
             </p>
@@ -461,10 +456,9 @@ export default function Checkout() {
               className="block bg-buttonblack text-white text-center py-2 px-4 "
             >
               Back to store
-              </NavLink>
-            </div>
+            </NavLink>
           </div>
-       
+        </div>
       )}
     </div>
   );
