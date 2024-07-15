@@ -34,7 +34,7 @@ export default function Checkout() {
     const Apikey = process.env.REACT_APP_APIKEY;
 
     const response = await fetch(
-      `${process.env.REACT_APP_API_URL}/${productId}?organization_id=${id}&Appid=${Appid}&Apikey=${Apikey}`
+      `${process.env.REACT_APP_BASE}/${productId}?organization_id=${id}&Appid=${Appid}&Apikey=${Apikey}`
     );
 
     if (!response.ok) throw new Error("Network response was not ok");
@@ -284,7 +284,7 @@ export default function Checkout() {
                 <div className="flex gap-5 items-center">
                   <img
                     src={`https://api.timbu.cloud/images/${
-                      product?.photos[0]?.url || ""
+                      product.photos[0]?.url || ""
                     }`}
                     alt={product.name}
                     className="w-20 h-20"
