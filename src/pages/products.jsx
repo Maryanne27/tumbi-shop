@@ -31,15 +31,18 @@ export default function Products() {
 
   const fetchProducts = async ({ queryKey }) => {
     const [, page] = queryKey;
-    const response = await axios.get("https://api.timbu.cloud/products", {
-      params: {
-        organization_id: "7b59152ffec240b3816027d241f05c93",
-        Appid: "OAX7IL8QDFZH0VY",
-        Apikey: "72eda6187cbb4106b975e9d2d616073420240712142534062960",
-        page: page,
-        size: productsPerPage,
-      },
-    });
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_URL}/products`,
+      {
+        params: {
+          organization_id: process.env.REACT_APP_ORG_ID,
+          Appid: process.env.REACT_APP_APPID,
+          Apikey: process.env.REACT_APP_APIKEY,
+          page: page,
+          size: productsPerPage,
+        },
+      }
+    );
     setTotalItems(response.data.total);
     return response.data.items;
   };
