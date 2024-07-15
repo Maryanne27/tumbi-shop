@@ -18,7 +18,7 @@ export default function ProductDetails() {
   };
 
   const fetchProductDetails = async () => {
-    const response = await axios.get(`${process.env.REACT_APP_BASE}/${id}`, {
+    const response = await axios.get(`${process.env.REACT_APP_BASE}/${id}/`, {
       params: {
         organization_id: process.env.REACT_APP_ORG_ID,
         Appid: process.env.REACT_APP_APPID,
@@ -63,10 +63,11 @@ export default function ProductDetails() {
     <div className="container mx-auto px-4 py-7">
       <div className="grid grid-cols-1 md:grid-cols-2 ">
         <div>
-          <img
-            src={`${process.env.REACT_APP_API_URL}/images/${
-              product.photos[0]?.url || ""
-            }`}
+        <img
+                    src={`https://api.timbu.cloud/images/${
+                      product.photos[0]?.url || ""
+                    }`}
+            
             alt={product.name}
             className="w-96 h-96"
           />

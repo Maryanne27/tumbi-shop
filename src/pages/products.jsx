@@ -31,7 +31,7 @@ export default function Products() {
 
   const fetchProducts = async ({ queryKey }) => {
     const [, page] = queryKey;
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/`, {
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/products/`, {
       params: {
         organization_id: process.env.REACT_APP_ORG_ID,
         Appid: process.env.REACT_APP_APPID,
@@ -159,8 +159,8 @@ export default function Products() {
                   className="w-full flex justify-center transform transition duration-300 hover:scale-105 active:scale-95"
                   onClick={() => navigate(`/products/${product.id}`)}
                 >
-                   <img
-                    src={`${process.env.REACT_APP_API_URL}/images/${
+                  <img
+                    src={`https://api.timbu.cloud/images/${
                       product.photos[0]?.url || ""
                     }`}
                     alt={product.name}

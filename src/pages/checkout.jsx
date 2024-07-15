@@ -283,8 +283,8 @@ export default function Checkout() {
               <div key={index} className="flex gap-6 mb-4 items-center mt-6">
                 <div className="flex gap-5 items-center">
                   <img
-                    src={`${process.env.REACT_APP_API_URL}/images/${
-                      product.photos[0]?.url || ""
+                    src={`https://api.timbu.cloud/images/${
+                      product?.photos[0]?.url || ""
                     }`}
                     alt={product.name}
                     className="w-20 h-20"

@@ -115,7 +115,7 @@ export default function Cart() {
                 className="border border-b-checkoutgray pb-4 flex items-start"
               >
                 <img
-                    src={`${process.env.REACT_APP_API_URL}/images/${
+                    src={`https://api.timbu.cloud/images/${
                       product.photos[0]?.url || ""
                     }`}
                     alt={product.name}
